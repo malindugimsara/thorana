@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>කුස රජුගේ ජීවන කතාව - Full Story</title>
+
+  <style>
+    /* --- Base Styles & Dark Theme --- */
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(to bottom, #050510, #1a0f1a); /* Dark gradient background */
+      color: #ffffff;
+      font-family: 'Noto Sans Sinhala', Arial, sans-serif; /* Best for Sinhala text */
+      overflow-x: hidden;
+    }
+
+    /* --- Header Styles --- */
+    .page-header {
+      text-align: center;
+      padding: 60px 20px 40px 20px;
+    }
+
+    .top-subtitle {
+      color: #d35400; /* Dark orange */
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .main-title {
+      color: #ffb700; /* Gold */
+      font-size: 42px;
+      margin: 0;
+      text-shadow: 0 0 15px rgba(255, 183, 0, 0.3);
+    }
+
+    /* --- Story Container & Layout --- */
+    .story-container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 20px 60px 20px;
+    }
+
+    .story-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 80px;
+      gap: 50px;
+    }
+
+    /* MAGIC TRICK: This makes every even row flip left-to-right! */
+    .story-row:nth-child(even) {
+      flex-direction: row-reverse;
+    }
+
+    /* --- Image Styles --- */
+    .story-image {
+      flex: 1; /* Takes up 50% width */
+      max-width: 50%;
+    }
+
+    .story-image img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(255, 183, 0, 0.2); /* Subtle gold border */
+      display: block;
+    }
+
+    /* --- Text Styles --- */
+    .story-text {
+      flex: 1; /* Takes up 50% width */
+      max-width: 50%;
+    }
+
+    .chapter-subtitle {
+      color: #e74c3c; /* Reddish orange */
+      font-size: 13px;
+      letter-spacing: 1px;
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    .chapter-title {
+      color: #ffcc00; /* Bright gold */
+      font-size: 32px;
+      margin: 0 0 20px 0;
+    }
+
+    .chapter-content {
+      color: #cccccc; /* Light gray for readability */
+      font-size: 16px;
+      line-height: 1.8;
+      margin: 0;
+      text-align: justify;
+    }
+
+    /* --- Mobile Responsiveness --- */
+    @media (max-width: 768px) {
+      .main-title {
+        font-size: 32px;
+      }
+
+      .story-row, .story-row:nth-child(even) {
+        flex-direction: column; /* Stack vertically on phones */
+        text-align: center;
+        gap: 30px;
+        margin-bottom: 60px;
+      }
+
+      .story-image, .story-text {
+        max-width: 100%; /* Full width on phones */
+      }
+
+      .chapter-content {
+        text-align: center; /* Center text on small screens */
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="page-header">
+    <span class="top-subtitle">කතාහී ගමන</span>
+    <h1 class="main-title">කුස රජුගේ ජීවන කතාව</h1>
+  </header>
+
+  <div class="story-container">
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/aa1.png" alt="කුස කුමරු">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">පළමු පරිච්ඡේදය</span>
+        <h2 class="chapter-title">කුස කුමරු</h2>
+        <p class="chapter-content">
+          පැරණි ජම්බුද්වීපයේ කුසාවතී නුවර, මහා රජෙකුගේ පුත් කුමරෙකු ලෙස කුස කුමරු උපන්නේය. ඔහු රූපයෙන් අඩු වුව ද, ප්‍රඥාවෙන් සහ ශක්තියෙන් අසමානය. බෝධිසත්වයෙකු වශයෙන් ඔහු දයාව, ශූරත්වය හා සත්‍යය ස්වරූපව පෙන්වීය.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/aa2.png" alt="පබාවතී කුමරිය හා විවාහය">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">දෙවන පරිච්ඡේදය</span>
+        <h2 class="chapter-title">පබාවතී කුමරිය හා විවාහය</h2>
+        <p class="chapter-content">
+          මදු රටේ අසහාය රූසපුවෙන් යුත් පබාවතී කුමරිය සමග කුස කුමරුගේ විවාහ සැපය මතු වේ. රූපය නොව, හදවත, ප්‍රඥාව හා කරුණාව සැබෑ ආදරයේ අඩිතාලම බව මෙහි දී හෙළිදරව් වේ.
+        </p>
+      </div>
+    </div>
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/placeholder.jpg" alt="Chapter 3 Image">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">තෙවන පරිච්ඡේදය</span>
+        <h2 class="chapter-title">කතාවේ මාතෘකාව 3</h2>
+        <p class="chapter-content">මෙතැනට තුන්වන පරිච්ඡේදයේ කතාව ඇතුලත් කරන්න. (Add your 3rd chapter content here).</p>
+      </div>
+    </div>
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/placeholder.jpg" alt="Chapter 4 Image">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">හතරවන පරිච්ඡේදය</span>
+        <h2 class="chapter-title">කතාවේ මාතෘකාව 4</h2>
+        <p class="chapter-content">මෙතැනට හතරවන පරිච්ඡේදයේ කතාව ඇතුලත් කරන්න. (Add your 4th chapter content here).</p>
+      </div>
+    </div>
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/placeholder.jpg" alt="Chapter 5 Image">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">පස්වන පරිච්ඡේදය</span>
+        <h2 class="chapter-title">කතාවේ මාතෘකාව 5</h2>
+        <p class="chapter-content">මෙතැනට පස්වන පරිච්ඡේදයේ කතාව ඇතුලත් කරන්න. (Add your 5th chapter content here).</p>
+      </div>
+    </div>
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/placeholder.jpg" alt="Chapter 6 Image">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">හයවන පරිච්ඡේදය</span>
+        <h2 class="chapter-title">කතාවේ මාතෘකාව 6</h2>
+        <p class="chapter-content">මෙතැනට හයවන පරිච්ඡේදයේ කතාව ඇතුලත් කරන්න. (Add your 6th chapter content here).</p>
+      </div>
+    </div>
+
+    <div class="story-row">
+      <div class="story-image">
+        <img src="../images/placeholder.jpg" alt="Chapter 7 Image">
+      </div>
+      <div class="story-text">
+        <span class="chapter-subtitle">හත්වන පරිච්ඡේදය</span>
+        <h2 class="chapter-title">කතාවේ මාතෘකාව 7</h2>
+        <p class="chapter-content">මෙතැනට හත්වන පරිච්ඡේදයේ කතාව ඇතුලත් කරන්න. (Add your 7th chapter content here).</p>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>

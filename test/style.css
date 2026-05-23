@@ -1,0 +1,368 @@
+/* ─── Base Styles & Fonts ───────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Sinhala:wght@400;600&display=swap');
+
+/* ─── Body & Blurred Background ────────────────────────── */
+body {
+  margin: 0;
+  padding: 24px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  font-family: 'Noto Sans Sinhala', Arial, sans-serif;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Removed 'justify-content: center' so your header stays at the top */
+}
+
+/* The Blurred Image Layer */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("../images/bgthorana.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(12px) brightness(0.85);
+  transform: scale(1.1);
+  z-index: -2;
+}
+
+/* The Dark Overlay Layer (keeps text readable) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: -1;
+}
+
+/* ─── Ambient floating particles ────────────────────────── */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffe49a;
+  opacity: 0;
+  animation: drift linear infinite;
+}
+.particle:nth-child(1) { width: 3px; height: 3px; left: 12%; animation-duration: 9s; animation-delay: 0s; }
+.particle:nth-child(2) { width: 2px; height: 2px; left: 28%; animation-duration: 13s; animation-delay: 1.5s; }
+.particle:nth-child(3) { width: 4px; height: 4px; left: 47%; animation-duration: 10s; animation-delay: 3s; }
+.particle:nth-child(4) { width: 2px; height: 2px; left: 65%; animation-duration: 14s; animation-delay: 0.8s; }
+.particle:nth-child(5) { width: 3px; height: 3px; left: 81%; animation-duration: 11s; animation-delay: 2.2s; }
+
+@keyframes drift {
+  0% { opacity: 0; bottom: -10px; transform: translateX(0) scale(0.8); }
+  15% { opacity: 0.7; }
+  85% { opacity: 0.4; }
+  100% { opacity: 0; bottom: 100vh; transform: translateX(30px) scale(1.2); }
+}
+
+/* ─── Header ────────────────────────────────────────────── */
+.page-header {
+  text-align: center;
+  margin-top: 40px;
+  margin-bottom: 30px;
+  position: relative;
+  z-index: 1;
+}
+
+.top-subtitle {
+  color: #d35400;
+  font-size: 14px;
+  letter-spacing: 2px;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.main-title {
+  color: #ffb700;
+  font-size: 36px;
+  margin: 0;
+  text-shadow: 0 0 15px rgba(255, 183, 0, 0.3);
+}
+
+/* ─── Story Layout ──────────────────────────────────────── */
+.story-wrapper {
+  max-width: 1000px;
+  width: 100%;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.story-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  /* Updated to semi-transparent black */
+  background: rgba(0, 0, 0, 0.6); 
+  padding: 40px;
+  border-radius: 20px;
+  /* Kept your gold border for a nice contrast against the black */
+  border: 1px solid rgba(255, 183, 0, 0.3);
+/* Add this line to give the card a soft gold aura */
+box-shadow: 0 0 15px rgba(255, 183, 0, 0.1), 0 15px 35px rgba(0, 0, 0, 0.5);
+}
+
+/* Magic class to flip image and text on even pages */
+.story-content.reverse {
+  flex-direction: row-reverse;
+}
+
+.story-image {
+  flex: 1;
+  max-width: 45%;
+}
+
+.story-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(255, 183, 0, 0.2);
+  display: block;
+}
+
+.story-text {
+  flex: 1;
+  max-width: 50%;
+}
+
+.chapter-subtitle {
+  color: #e74c3c;
+  font-size: 13px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.chapter-title {
+  color: #ffcc00;
+  font-size: 32px;
+  margin: 0 0 20px 0;
+}
+
+.chapter-content {
+  color: #cccccc;
+  font-size: 16px;
+  line-height: 1.8;
+  margin: 0;
+  text-align: justify;
+}
+
+/* ─── Navigation Buttons ────────────────────────────────── */
+.navigation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.nav-btn {
+  text-decoration: none;
+  padding: 12px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #d35400, #e74c3c);
+  color: #fff;
+  box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* ─── Mobile Responsiveness ─────────────────────────────── */
+@media (max-width: 768px) {
+  .story-content, .story-content.reverse {
+    flex-direction: column;
+    text-align: center;
+    padding: 20px;
+  }
+  .story-image, .story-text {
+    max-width: 100%;
+  }
+  .chapter-content {
+    text-align: center;
+  }
+  .navigation-buttons {
+    flex-direction: column-reverse;
+    padding: 0 20px;
+  }
+  .nav-btn {
+    text-align: center;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+
+/* ─── Header & Close Button Styles ─────────────────────── */
+
+.close-btn {
+  position: fixed; /* Fixed to the viewport corner */
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #ff5555, #cc1a1a);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 700;
+  box-shadow: 0 4px 12px rgba(220, 30, 30, 0.5);
+  z-index: 1000;
+  transition: transform 0.3s ease, background 0.2s;
+}
+
+.close-btn:hover {
+  transform: scale(1.1) rotate(90deg);
+  background: #ff2222;
+}
+
+/* .logo-header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.main-title {
+  font-family: "Cinzel", serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  background: linear-gradient(135deg, #a8ffb0, #22c55e, #15803d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.sub-title {
+  font-family: "Noto Sans Sinhala", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  background: linear-gradient(135deg, #fff, #d1d1d1);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+} */
+
+
+.logo-header {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.main-title {
+  font-family: "Cinzel", serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  
+  /* Light Green Gradient */
+  background: linear-gradient(135deg, #ccff00, #32cd32);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  
+  /* Adds depth and a soft glow */
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3), 0 0 10px rgba(50, 205, 50, 0.3);
+}
+
+.sub-title {
+  font-family: "Noto Sans Sinhala", sans-serif;
+  font-size: 18px; /* Increased for better readability */
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: #ffffff; /* Brighter white */
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+  margin-top: 8px;
+  display: block;
+}
+
+.header-divider {
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #22c55e, transparent);
+  margin: 15px auto 0;
+}
+
+/* ─── Social Share Styles ───────────────────────────────── */
+.social-share {
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  padding-bottom: 40px;
+}
+
+.contact-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: #aaa;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-right: 10px;
+}
+
+.social-icon {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 183, 0, 0.3);
+  color: #fff;
+  font-size: 18px;
+  transition: all 0.3s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-5px);
+  background: rgba(255, 183, 0, 0.2);
+  border-color: #ffb700;
+  box-shadow: 0 0 15px rgba(255, 183, 0, 0.3);
+}
+
+.social-icon.fb:hover { color: #1877f2; }
+.social-icon.web:hover { color: #10b981; }

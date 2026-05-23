@@ -9,41 +9,10 @@
   <link rel="icon" type="image/x-icon" href="images/athu.png" sizes="16x16">
 
   <style>
-    .circle-container {
-      position: fixed;
-      top: 10%;
-      left: 220px;
-      transform: translateY(-50%);
-      width: 180px;
-      height: 180px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      opacity: 0.80;
-    }
+    
 
-    .circle-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: 0;
-      transition: opacity 1s ease;
-      z-index: 1;
-    }
-
-    .circle-container img.active {
-      opacity: 1;
-      z-index: 2;
-    }
+    
+    
 
     body {
       width: 100vw;
@@ -57,19 +26,26 @@
       position: relative;
     }
 
-    body::before {
-      content: "";
+    /* Replaces your body::before */
+    .bg-video {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background-image: url('images/bgtest3.png');
-      background-size: cover;
-      background-position: center center;
-      background-repeat: no-repeat;
+      object-fit: cover;
+      /* Ensures the video covers the screen without stretching */
       opacity: 0.2;
+      /* Keeps your desired 20% opacity */
       z-index: -1;
+      /* Pushes the video behind your content */
+      pointer-events: none;
+      /* Prevents users from accidentally right-clicking the video */
+    }
+
+    /* Example to ensure your foreground content stays on top */
+    .content {
+      z-index: 1;
     }
 
     #sound-icon {
@@ -117,13 +93,7 @@
         width: 100px;
       }
 
-      .circle-container {
-        left: 50%;
-        top: 80px;
-        transform: translate(-50%, -50%);
-        width: 100px;
-        height: 100px;
-      }
+      
 
       #sound-icon {
         font-size: 35px;
@@ -138,9 +108,12 @@
       top: 20px;
       right: 20px;
       padding: 10px 20px;
-      background-color: #FFD700; /* Gold color */
-      color: #000; /* Black text */
-      font-size: 16px; /* Size for the main Sinhala text */
+      background-color: #FFD700;
+      /* Gold color */
+      color: #000;
+      /* Black text */
+      font-size: 16px;
+      /* Size for the main Sinhala text */
       font-weight: bold;
       border: none;
       border-radius: 8px;
@@ -148,15 +121,20 @@
       z-index: 1005;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
       transition: background-color 0.3s, transform 0.2s;
-      text-align: center; /* Centers both lines of text */
-      line-height: 1.3;   /* Controls the space between the two lines */
+      text-align: center;
+      /* Centers both lines of text */
+      line-height: 1.3;
+      /* Controls the space between the two lines */
     }
 
     /* Styles specifically for the English subtitle */
     #fullStoryBtn span {
-      font-size: 12px;     /* Makes the English text smaller */
-      font-weight: normal; /* Removes bolding from the English text */
-      opacity: 0.8;        /* Makes it slightly softer than the main text */
+      font-size: 12px;
+      /* Makes the English text smaller */
+      font-weight: normal;
+      /* Removes bolding from the English text */
+      opacity: 0.8;
+      /* Makes it slightly softer than the main text */
     }
 
     #fullStoryBtn:hover {
@@ -167,19 +145,27 @@
     /* Mobile adjustments */
     @media (max-width: 768px) {
       #fullStoryBtn {
-        top: 60px; 
+        top: 60px;
         right: 15px;
-        font-size: 14px; /* Slightly smaller Sinhala for mobile */
+        font-size: 14px;
+        /* Slightly smaller Sinhala for mobile */
         padding: 8px 16px;
       }
+
       #fullStoryBtn span {
-        font-size: 10px; /* Slightly smaller English for mobile */
+        font-size: 10px;
+        /* Slightly smaller English for mobile */
       }
     }
   </style>
 </head>
 
 <body style="margin: 0; ">
+
+  <!-- Add this right after the opening body tag -->
+  <video autoplay loop muted playsinline class="bg-video">
+    <source src="images/bg.mp4" type="video/mp4">
+  </video>
 
   <div id="sound-icon">🔇</div>
 
@@ -188,19 +174,6 @@
     Your browser does not support the audio element.
   </audio>
 
-  <div class="circle-container" id="circleContainer" style="display: none;">
-    <img src="images/a1.gif" id="ImageHolder1">
-    <img src="images/a2.gif" id="ImageHolder2">
-    <img src="images/a3.gif" id="ImageHolder3">
-    <img src="images/a4.gif" id="ImageHolder4">
-    <img src="images/a5.gif" id="ImageHolder5">
-    <img src="images/a6.gif" id="ImageHolder6">
-    <img src="images/a7.gif" id="ImageHolder7">
-    <img src="images/a8.gif" id="ImageHolder8">
-  </div>
-
-  <div id="sound-icon">🔇</div>
-  
   <button id="fullStoryBtn">සම්පූර්න කතාව <br> <span>Full Story</span></button>
 
   <canvas style="width: 100vw; height: 100vh; object-fit: contain;" id="myCanvas">
@@ -210,46 +183,17 @@
   <script>
 
     // Make the full story button work
-    document.getElementById("fullStoryBtn").addEventListener("click", function() {
+    document.getElementById("fullStoryBtn").addEventListener("click", function () {
       // Replace the URL below with the link to your full story
-      window.location.href = "pages/page1.html"; 
+      window.location.href = "test/page1.html";
     });
 
 
     const audio = document.getElementById("my-audio");
     const icon = document.getElementById("sound-icon");
-    const circleContainer = document.getElementById("circleContainer");
+    
 
-    const timeToImageMap = [
-      { start: 0.00, end: 150.00, id: "ImageHolder1" },
-      { start: 151.00, end: 198.00, id: "ImageHolder2" },
-      { start: 199.00, end: 240.00, id: "ImageHolder3" },
-      { start: 241.00, end: 307.00, id: "ImageHolder4" },
-      { start: 308.00, end: 417.00, id: "ImageHolder5" },
-      { start: 418.00, end: 514.00, id: "ImageHolder6" },
-      { start: 515.00, end: 570.00, id: "ImageHolder7" },
-      { start: 571.00, end: 710.00, id: "ImageHolder8" },
-    ];
-
-    let currentActiveId = null;
-
-    function showImageForTime(currentTime) {
-      for (let entry of timeToImageMap) {
-        if (currentTime >= entry.start && currentTime <= entry.end) {
-          if (currentActiveId !== entry.id) {
-            timeToImageMap.forEach(e => {
-              const img = document.getElementById(e.id);
-              img.classList.remove("active");
-            });
-
-            const activeImg = document.getElementById(entry.id);
-            activeImg.classList.add("active");
-            currentActiveId = entry.id;
-          }
-          return;
-        }
-      }
-    }
+    
 
     window.addEventListener("load", () => {
       audio.play().catch(err => console.log("Autoplay blocked:", err));
@@ -261,19 +205,15 @@
         audio.play();
         icon.classList.add("active");
         icon.textContent = "🔊";
-        circleContainer.style.display = "flex";
       } else {
         audio.muted = true;
         audio.pause();
         icon.classList.remove("active");
         icon.textContent = "🔇";
-        circleContainer.style.display = "none";
       }
     });
 
-    audio.addEventListener("timeupdate", () => {
-      showImageForTime(audio.currentTime);
-    });
+   
 
     window.addEventListener("orientationchange", function () {
       setTimeout(function () { location.reload(); }, 300);
@@ -396,7 +336,7 @@
 
         if (currentSequenceIndex >= sequencePatterns.length) {
           currentSequenceIndex = sequencePatterns.length - 1;
-         
+
           currentSequenceIndex = 0;
         }
       }
@@ -731,7 +671,7 @@
         if (image5.complete && image5.naturalWidth !== 0) context.drawImage(image5, cx[4] - r * fractionOfDispSmall, cy[4] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
         //if (image6.complete && image6.naturalWidth !== 0) context.drawImage(image6, cx[3] - r * fractionOfDispSmall, cy[3] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
         if (image7.complete && image7.naturalWidth !== 0) context.drawImage(image7, cx[2] - r * fractionOfDispSmall, cy[2] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
-        
+
         // Draw Center Image (Buddha) last so it stays on top
         if (imageCenter.complete && imageCenter.naturalWidth !== 0) {
           context.drawImage(imageCenter, cx[0] - R * Math.sin(Math.PI / 6) - w * 0.00365, cy[0] - 0.019 * w, dim + 0.018 * w, dim + 0.015 * w);
@@ -742,7 +682,7 @@
 
 
         if (image1.complete && image1.naturalWidth !== 0) context.drawImage(image1, cx[8] - r * fractionOfDispSmall, cy[8] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
-        
+
         // Rotated Image 2
         if (image2.complete && image2.naturalWidth !== 0) {
           context.save();
@@ -751,9 +691,9 @@
           context.drawImage(image2, -r * fractionOfDispSmall, -r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
           context.restore();
         }
-        
+
         if (image3.complete && image3.naturalWidth !== 0) context.drawImage(image3, cx[6] - r * fractionOfDispSmall, cy[6] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
-        
+
         // Rotated Image 4
         if (image4.complete && image4.naturalWidth !== 0) {
           context.save();
@@ -762,9 +702,9 @@
           context.drawImage(image4, -r * fractionOfDispSmall, -r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
           context.restore();
         }
-        
+
         if (image5.complete && image5.naturalWidth !== 0) context.drawImage(image5, cx[4] - r * fractionOfDispSmall, cy[4] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
-        
+
         // Rotated Image 6
         if (image6.complete && image6.naturalWidth !== 0) {
           context.save();
@@ -773,7 +713,7 @@
           context.drawImage(image6, -r * fractionOfDispSmall, -r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
           context.restore();
         }
-        
+
         if (image7.complete && image7.naturalWidth !== 0) context.drawImage(image7, cx[2] - r * fractionOfDispSmall, cy[2] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
       }
 
