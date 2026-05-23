@@ -6,10 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <link rel="icon" type="image/x-icon" href="images/logo.ico" sizes="16x16">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <link rel="icon" type="image/x-icon" href="images/athu.png" sizes="16x16">
 
   <style>
     .circle-container {
@@ -57,7 +54,6 @@
       justify-content: center;
       overflow: hidden;
       background-color: #000;
-      /* Fallback color */
       position: relative;
     }
 
@@ -69,15 +65,10 @@
       width: 100%;
       height: 100%;
       background-image: url('images/bgtest3.png');
-      /* Make sure this path is correct */
-
-      /* THIS IS THE KEY PART FOR FIXING THE STRETCH */
       background-size: cover;
       background-position: center center;
       background-repeat: no-repeat;
-
-      opacity: 0.3;
-      /* Keep your desired opacity here */
+      opacity: 0.2;
       z-index: -1;
     }
 
@@ -95,29 +86,6 @@
     #sound-icon.active {
       color: #4caf50;
       transform: scale(1.2);
-    }
-
-    .story-button {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      padding: 12px 24px;
-      background-color: #FFC107;
-      color: #333;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      transition: all 0.3s ease;
-      z-index: 9999;
-    }
-
-    .story-button:hover {
-      background-color: #FFA000;
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
 
     #myCanvas {
@@ -142,13 +110,11 @@
       display: block;
     }
 
-    /* --- Mobile Responsive CSS කොටස --- */
     @media (max-width: 768px) {
       .logo-container {
         right: 10px;
         top: 10px;
         width: 100px;
-        /* Logo එක Mobile වලට ගැලපෙන ලෙස කුඩා කිරීම */
       }
 
       .circle-container {
@@ -161,15 +127,59 @@
 
       #sound-icon {
         font-size: 35px;
-        /* Icon එක කුඩා කිරීම */
         bottom: 15px;
         right: 15px;
+      }
+    }
+
+    /* --- Full Story Button Styles --- */
+    #fullStoryBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      background-color: #FFD700; /* Gold color */
+      color: #000; /* Black text */
+      font-size: 16px; /* Size for the main Sinhala text */
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      z-index: 1005;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      transition: background-color 0.3s, transform 0.2s;
+      text-align: center; /* Centers both lines of text */
+      line-height: 1.3;   /* Controls the space between the two lines */
+    }
+
+    /* Styles specifically for the English subtitle */
+    #fullStoryBtn span {
+      font-size: 12px;     /* Makes the English text smaller */
+      font-weight: normal; /* Removes bolding from the English text */
+      opacity: 0.8;        /* Makes it slightly softer than the main text */
+    }
+
+    #fullStoryBtn:hover {
+      background-color: #ffcc00;
+      transform: scale(1.05);
+    }
+
+    /* Mobile adjustments */
+    @media (max-width: 768px) {
+      #fullStoryBtn {
+        top: 60px; 
+        right: 15px;
+        font-size: 14px; /* Slightly smaller Sinhala for mobile */
+        padding: 8px 16px;
+      }
+      #fullStoryBtn span {
+        font-size: 10px; /* Slightly smaller English for mobile */
       }
     }
   </style>
 </head>
 
-<body onload="getComm()" style="margin: 0; ">
+<body style="margin: 0; ">
 
   <div id="sound-icon">🔇</div>
 
@@ -189,15 +199,22 @@
     <img src="images/a8.gif" id="ImageHolder8">
   </div>
 
-  <!-- <div class="logo-container">
-    <img src="images/athu.png" alt="Logo">
-    </div> -->
+  <div id="sound-icon">🔇</div>
+  
+  <button id="fullStoryBtn">සම්පූර්න කතාව <br> <span>Full Story</span></button>
 
   <canvas style="width: 100vw; height: 100vh; object-fit: contain;" id="myCanvas">
     Your browser not supported. please try with a different device.
   </canvas>
 
   <script>
+
+    // Make the full story button work
+    document.getElementById("fullStoryBtn").addEventListener("click", function() {
+      // Replace the URL below with the link to your full story
+      window.location.href = "pages/page1.html"; 
+    });
+
 
     const audio = document.getElementById("my-audio");
     const icon = document.getElementById("sound-icon");
@@ -258,98 +275,46 @@
       showImageForTime(audio.currentTime);
     });
 
-    // Mobile Phone එක හරවන විට (Rotate කරද්දී) Screen size එක update වීමට
     window.addEventListener("orientationchange", function () {
-      setTimeout(function () {
-        location.reload();
-      }, 300);
+      setTimeout(function () { location.reload(); }, 300);
     });
 
     if (!sessionStorage.getItem('welcomeShown')) {
       sessionStorage.setItem('welcomeShown', 'true');
       window.location.href = "welcome.html";
     }
-    var ww, hw;
-    ww = window.innerWidth;
-    hw = window.innerHeight;
 
-    var myCanvas;
-    var canvasWidth, canvasHeight;
-
-    var w, h;
-    var context;
-    var r, R, z;
-    var marginTop, marginBotom;
+    var ww = window.innerWidth;
+    var hw = window.innerHeight;
+    var myCanvas, context;
+    var w, h, r, R, z, marginTop, marginBotom;
     var cx = new Array();
     var cy = new Array();
-    var pointSqx, pointSqy;
-    var dimPointSqx, dimPointSqy;
-    var fractionOfDispSmall, fractionOfDispLarge
+    var pointSqx, pointSqy, dimPointSqx, dimPointSqy;
+    var fractionOfDispSmall, fractionOfDispLarge;
     var angleBC;
     var leftImgBoxStartX, leftImgBoxStartY, rightImgBoxStartX, rightImgBoxStartY;
     var leftImageBoxW, leftImageBoxH, rightImgBoxW, rightImgBoxH;
     var imageBoxPadding;
-    var pointX, pointY;
 
     window.onload = function () {
-
-      var request2 = new XMLHttpRequest();
-      var data = new FormData();
-      data.append('name', 'yourName');
-      var nameOfCommenter, dateOfTheComment, theComment;
-      var commenterName = document.getElementById('commenterName');
-      var commentDate = document.getElementById('commentDate');
-      var comment = document.getElementById('comment');
-
-      request2.addEventListener('readystatechange', function (event) {
-        if (this.readyState == 4) {
-          if (this.status == 200) {
-            var response = this.response;
-            if (response) {
-              try {
-                var obj = JSON.parse(response);
-                var lengthObj = obj.length;
-                commenterName.innerHTML = "අපවෙත ඔබගේ වටිනා අදහස් " + lengthObj + "ක් ලැබී ඇත.";
-                var kx = 0;
-                setInterval(function () {
-                  if (obj[kx]) {
-                    nameOfCommenter = obj[kx].name;
-                    dateOfTheComment = obj[kx].date;
-                    theComment = obj[kx].comment;
-                    commenterName.innerHTML = nameOfCommenter;
-                    commentDate.innerHTML = dateOfTheComment;
-                    comment.innerHTML = '<i>' + theComment + '</i>';
-                    kx++;
-                    if (kx == lengthObj) {
-                      kx = 0;
-                    }
-                  }
-                }, 5000);
-              } catch (e) { }
-            }
-          }
-        }
-      });
-      request2.open('POST', 'comm.php');
-      request2.setRequestHeader('Cache-Control', 'no-cache');
-      request2.send(data);
-
       myCanvas = document.getElementById('myCanvas');
-      myCanvas.width = ww;
-      myCanvas.height = ww / 2;
+      w = myCanvas.width = ww;
+      h = myCanvas.height = ww / 2;
+      context = myCanvas.getContext("2d");
 
       function fullscreen() {
-        if (myCanvas.webkitRequestFullScreen) {
-          myCanvas.webkitRequestFullScreen();
-        }
-        else {
-          myCanvas.mozRequestFullScreen();
+        var elem = document.documentElement; // මුළු පිටුවම Full Screen කරයි
+
+        if (elem.requestFullscreen) {
+          elem.requestFullscreen();
+        } else if (elem.webkitRequestFullscreen) { /* Safari/Chrome වලට */
+          elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* Edge/IE වලට */
+          elem.msRequestFullscreen();
         }
       }
       myCanvas.addEventListener("click", fullscreen);
-
-      w = myCanvas.width;
-      h = myCanvas.height;
 
       marginTop = 0.12;
       marginBotom = 0.1;
@@ -361,266 +326,34 @@
       cx[0] = w / 2;
       cy[0] = (h / 2) * (1 + marginTop - marginBotom);
 
-      var gap = r * 0.47;
+      var gap = r * 0.478;
       var distanceToCenter = R + r + gap;
 
-      for (var i = 0; i <= 7; i++) {
-        cx[i + 1] = cx[0] + distanceToCenter * Math.sin(i * (Math.PI / 4));
-      }
-
-      for (var i = 0; i <= 7; i++) {
-        cy[i + 1] = cy[0] + distanceToCenter * Math.cos(i * (Math.PI / 4));
-      }
+      for (var i = 0; i <= 7; i++) { cx[i + 1] = cx[0] + distanceToCenter * Math.sin(i * (Math.PI / 4)); }
+      for (var i = 0; i <= 7; i++) { cy[i + 1] = cy[0] + distanceToCenter * Math.cos(i * (Math.PI / 4)); }
 
       pointSqx = cx[0] - (R + 3 * r);
       pointSqy = (cy[0] + r) + (distanceToCenter / Math.sqrt(2));
       dimPointSqx = 6 * r + 2 * R;
       dimPointSqy = 0.98 * h - pointSqy;
 
-      context = myCanvas.getContext("2d");
+      // Loading all Images
+      const downImage = new Image(); downImage.src = "images/thorana1 (2).png";
+      const imageCenter = new Image(); imageCenter.src = "images/budda.webp";
+      const imageMakaraleft = new Image(); imageMakaraleft.src = 'images/pilr.png';
+      const imageMakaraRight = new Image(); imageMakaraRight.src = 'images/pil.png';
+      const image1 = new Image(); image1.src = "images/aa1.png";
+      const image2 = new Image(); image2.src = "images/aa2.png";
+      const image3 = new Image(); image3.src = "images/aa3.png";
+      const image4 = new Image(); image4.src = "images/aa4.jpg";
+      const image5 = new Image(); image5.src = "images/aa5.png";
+      const image6 = new Image(); image6.src = "images/aa6.png";
+      const image7 = new Image(); image7.src = "images/aa7.png";
+      const image8 = new Image(); image8.src = "images/aa8.png";
 
-      context.clearRect(pointSqx, pointSqy, dimPointSqx, dimPointSqy);
-
-      var drawRadialDotGrid = function (frameCount) {
-        var numRays = 8;
-        var dotsPerRay = 8;
-        var startDist = R * 1.15;
-        var endDist = R * 1.75;
-
-        for (var i = 0; i < numRays; i++) {
-          var angle = (2 * Math.PI / numRays) * i + (Math.PI / numRays);
-
-          for (var j = 0; j < dotsPerRay; j++) {
-            // මේ පේළියෙන් වෙන්නේ රැල්ලක් වගේ එකින් එක පත්තු වීම (Sequential Wave)
-            // j * 0.5 වෙනුවට 0.2 වගේ දැම්මොත් තව මන්දගාමී වේවි
-            var pulse = Math.sin(frameCount * 0.15 - j * 0.4);
-
-            // පත්තු වන දේ පමණක් දීප්තිමත් කිරීමට:
-            var opacity = pulse > 0.5 ? 1.0 : 0.2;
-
-            var dist = startDist + (j / (dotsPerRay - 1)) * (endDist - startDist);
-            var x = cx[0] + dist * Math.cos(angle);
-            var y = cy[0] + dist * Math.sin(angle);
-
-            var hue = 200 + (j * 15);
-            context.fillStyle = `hsla(${hue}, 100%, 60%, ${opacity})`;
-
-            context.beginPath();
-            context.arc(x, y, dotSizeMedium * 1.2, 0, Math.PI * 2);
-            context.fill();
-            context.closePath();
-          }
-        }
-      };
-      const lightPatterns = {
-        currentPattern: 0,
-        patternCount: 14,
-
-        rainbowBulbs: function (x, y, radius) {
-          const time = Date.now() / 10;
-          const hue = (time + x + y) % 360;
-          context.beginPath();
-          context.fillStyle = `hsl(${hue}, 100%, 50%)`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        twinkleBulbs: function (x, y, radius) {
-          const flicker = Math.random();
-          context.beginPath();
-          context.fillStyle = `rgba(255, 255, 0, ${0.5 + flicker * 0.5})`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        waveBulbs: function (x, y, radius) {
-          const time = Date.now() / 300;
-          const intensity = (Math.sin((x + y) / 30 + time) + 1) / 2;
-          const blue = Math.floor(100 + 155 * intensity);
-          context.beginPath();
-          context.fillStyle = `rgb(0, ${blue}, 255)`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        pulseBulbs: function (x, y, radius) {
-          const time = Date.now() / 400;
-          const pulse = (Math.sin(time) + 1) / 2;
-          context.beginPath();
-          context.fillStyle = `rgba(255, ${Math.floor(100 + 155 * pulse)}, ${Math.floor(150 + 100 * pulse)}, 1)`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        purpleSparkle: function (x, y, radius) {
-          const flicker = Math.random();
-          context.beginPath();
-          context.fillStyle = `rgba(138, 43, 226, ${0.6 + flicker * 0.4})`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        breathingWhite: function (x, y, radius) {
-          const time = Date.now() / 500;
-          const scale = 0.8 + 0.2 * Math.sin(time);
-          context.beginPath();
-          context.fillStyle = `rgba(255, 255, 255, 1)`;
-          context.arc(x, y, radius * scale, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        colorShift: function (x, y, radius) {
-          const time = Date.now() / 200;
-          const r = Math.floor(128 + 128 * Math.sin(time + x));
-          const g = Math.floor(128 + 128 * Math.sin(time + y));
-          const b = Math.floor(128 + 128 * Math.sin(time + x + y));
-          context.beginPath();
-          context.fillStyle = `rgb(${r},${g},${b})`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        fireFlicker: function (x, y, radius) {
-          const flicker = Math.random();
-          const r = 255;
-          const g = Math.floor(100 + 155 * flicker);
-          const b = Math.floor(0 + 50 * flicker);
-          context.beginPath();
-          context.fillStyle = `rgb(${r},${g},${b})`;
-          context.arc(x, y, radius, 0, Math.PI * 2);
-          context.fill();
-        },
-
-        neonPulse: function (x, y, radius) {
-          const time = Date.now() / 1000;
-          let position;
-
-          const width = dimPointSqx;
-          const height = dimPointSqy;
-          const perimeter = 2 * (width + height);
-
-          let distance = 0;
-          if (y === pointSqy) {
-            distance = x - pointSqx;
-          } else if (x === pointSqx + dimPointSqx) {
-            distance = width + (y - pointSqy);
-          } else if (y === pointSqy + dimPointSqy) {
-            distance = width + height + (pointSqx + dimPointSqx - x);
-          } else {
-            distance = 2 * width + height + (pointSqy + dimPointSqy - y);
-          }
-
-          position = distance / perimeter;
-
-          const pulsePosition = (time % 2) / 2;
-          const distance1 = Math.abs(position - pulsePosition);
-          const distance2 = 1 - distance1;
-          const minDistance = Math.min(distance1, distance2);
-
-          const intensity = Math.max(0, 1 - minDistance * 10);
-
-          const hue = (time * 50) % 360;
-          context.beginPath();
-          context.fillStyle = `hsla(${hue}, 100%, 50%, ${intensity})`;
-          context.arc(x, y, radius * (1 + intensity), 0, Math.PI * 2);
-          context.fill();
-
-          if (intensity > 0.7) {
-            context.beginPath();
-            context.fillStyle = `hsla(${hue}, 100%, 80%, ${intensity - 0.7})`;
-            context.arc(x, y, radius * 2, 0, Math.PI * 2);
-            context.fill();
-          }
-        },
-
-        cornerPulse: function (x, y, radius) {
-          const time = Date.now() / 800;
-          const cornerHighlight = Math.floor(time) % 4;
-
-          const corners = [
-            { x: pointSqx, y: pointSqy },
-            { x: pointSqx + dimPointSqx, y: pointSqy },
-            { x: pointSqx + dimPointSqx, y: pointSqy + dimPointSqy },
-            { x: pointSqx, y: pointSqy + dimPointSqy }
-          ];
-
-          const activeCorner = corners[cornerHighlight];
-          const distance = Math.sqrt(Math.pow(x - activeCorner.x, 2) + Math.pow(y - activeCorner.y, 2));
-
-          const maxDistance = Math.sqrt(Math.pow(dimPointSqx, 2) + Math.pow(dimPointSqy, 2));
-          const intensity = 1 - Math.min(1, distance / (maxDistance * 0.7));
-
-          context.beginPath();
-          context.fillStyle = `rgba(0, 255, 200, ${intensity})`;
-          context.arc(x, y, radius * (0.7 + intensity * 0.5), 0, Math.PI * 2);
-          context.fill();
-        },
-
-        audioVisualizer: function (x, y, radius) {
-          const time = Date.now() / 50;
-
-          let amplitude = 0;
-          for (let i = 1; i <= 5; i++) {
-            amplitude += Math.sin(time / i + x * 0.1) * (1 / i);
-          }
-          amplitude = (amplitude + 5) / 10;
-
-          const size = radius * (0.5 + amplitude);
-          context.beginPath();
-          context.fillStyle = `hsl(${amplitude * 120 + 240}, 100%, 50%)`;
-          context.arc(x, y, size, 0, Math.PI * 2);
-          context.fill();
-        },
-      };
-
-      function drawLightBorder() {
-        const bulbRadius = 4;
-        const bulbSpacing = 8;
-
-        let currentPatternFn;
-        switch (lightPatterns.currentPattern) {
-          case 0: currentPatternFn = lightPatterns.rainbowBulbs; break;
-          case 1: currentPatternFn = lightPatterns.twinkleBulbs; break;
-          case 2: currentPatternFn = lightPatterns.waveBulbs; break;
-          case 3: currentPatternFn = lightPatterns.pulseBulbs; break;
-          case 4: currentPatternFn = lightPatterns.purpleSparkle; break;
-          case 5: currentPatternFn = lightPatterns.breathingWhite; break;
-          case 6: currentPatternFn = lightPatterns.colorShift; break;
-          case 7: currentPatternFn = lightPatterns.fireFlicker; break;
-          case 9: currentPatternFn = lightPatterns.cornerPulse; break;
-          case 10: currentPatternFn = lightPatterns.audioVisualizer; break;
-          default: currentPatternFn = lightPatterns.rainbowBulbs;
-        }
-
-        const horizontalBulbs = Math.floor(dimPointSqx / bulbSpacing);
-        const verticalBulbs = Math.floor(dimPointSqy / bulbSpacing);
-
-        for (let i = 0; i <= horizontalBulbs; i++) {
-          currentPatternFn(pointSqx + (i * bulbSpacing), pointSqy, bulbRadius);
-        }
-
-        for (let i = 0; i <= verticalBulbs; i++) {
-          currentPatternFn(pointSqx + dimPointSqx, pointSqy + (i * bulbSpacing), bulbRadius);
-        }
-
-        for (let i = 0; i <= horizontalBulbs; i++) {
-          currentPatternFn(pointSqx + dimPointSqx - (i * bulbSpacing), pointSqy + dimPointSqy, bulbRadius);
-        }
-
-        for (let i = 0; i <= verticalBulbs; i++) {
-          currentPatternFn(pointSqx, pointSqy + dimPointSqy - (i * bulbSpacing), bulbRadius);
-        }
-      }
-
-      setInterval(function () {
-        lightPatterns.currentPattern = (lightPatterns.currentPattern + 1) % lightPatterns.patternCount;
-      }, 7000);
-
-      function animateLightBorder() {
-        requestAnimationFrame(animateLightBorder);
-        context.clearRect(pointSqx, pointSqy, dimPointSqx, dimPointSqy);
-        drawLightBorder();
-      }
+      var dim = 2 * R * Math.sin(Math.atan(0.5));
+      var makara_height = 152;
+      var makara_width = makara_height * 2;
 
       imageBoxPadding = 0.01 * h;
       var d = (r - cy[1] + cy[8]) / r;
@@ -629,219 +362,197 @@
       leftImgBoxStartY = pointSqy + imageBoxPadding;
       leftImageBoxH = dimPointSqy - 2 * imageBoxPadding;
       leftImageBoxW = R + 3 * r - r * Math.sin(angleBC) - 2 * imageBoxPadding;
-
       rightImgBoxStartX = cx[0] + r * Math.sin(angleBC) + imageBoxPadding;
       rightImgBoxStartY = cy[1] + r * Math.cos(angleBC) + imageBoxPadding;
       rightImgBoxH = leftImageBoxH;
       rightImgBoxW = leftImageBoxW;
 
-      const downImage = new Image();
-      downImage.src = "images/thorana1 (2).png";
-
-      downImage.onload = () => {
-        downImage.decode().then(() => {
-          context.imageSmoothingEnabled = true;
-          context.imageSmoothingQuality = 'high';
-
-          context.drawImage(
-            downImage,
-            leftImgBoxStartX,
-            leftImgBoxStartY,
-            R * 2.01 + 6.05 * r - imageBoxPadding * 2,
-            rightImgBoxH
-          );
-        }).catch((err) => {
-          console.error("Image decode failed:", err);
-        });
-      };
-
-      for (var i = 0; i < cx.length; i++) {
-        if (i === 1) continue;
-        context.save();
-        context.translate(cx[i], cy[i]);
-
-        if (i === 3 || i === 5 || i === 7) { context.rotate(45 * Math.PI / 180); }
-
-        context.beginPath();
-        context.strokeStyle = "#FFD700";
-        context.fillStyle = "rgba(0,0,0,1)";
-        if (i == 0) {
-          context.arc(0, 0, R, Math.PI * 2, false);
-        } else {
-          context.rect(-r, -r, r * 2, r * 2);
-        }
-        context.stroke();
-        context.fill();
-        context.closePath();
-        context.restore();
-      }
-
       fractionOfDispSmall = 0.6;
       fractionOfDispLarge = 0.1;
-      for (var i = 0; i < cx.length; i++) {
-        if (i === 1) continue;
-        context.save();
-        context.translate(cx[i], cy[i]);
 
-        if (i === 3 || i === 5 || i === 7) { context.rotate(45 * Math.PI / 180); }
-
-        context.beginPath();
-        context.strokeStyle = "#FFD700";
-        context.fillStyle = "rgba(0,0,0,1)";
-
-        // මායිමේ ඝනකම වැඩි කිරීමට මෙම පේළිය එකතු කරන්න
-        context.lineWidth = 5; // මෙතන 5 වෙනුවට 8 හෝ 10 ලෙස අගය වැඩි කරමින් ඔබට අවශ්‍ය ඝනකම තෝරාගන්න.
-
-        if (i == 0) {
-          context.arc(0, 0, R, Math.PI * 2, false);
-        } else {
-          context.rect(-r, -r, r * 2, r * 2);
-        }
-        context.stroke(); // මෙය ක්‍රියාත්මක වන විට තමයි lineWidth එක බලපාන්නේ
-        context.fill();
-        context.closePath();
-        context.restore();
-      }
-
-      var flowerCenter = 0.88 * R * (1 - fractionOfDispLarge);
+      var dotSize = 0.003 * w;
+      var dotSizeMedium = 0.75 * dotSize;
       var flowerCenterDotSize = 0.004 * w;
-      var flowerOuterDotSize = 0.0038 * w;
-      var flowerLevel1FormCenter = 0.012 * w;
-      var countOuterFlowers = 8;
 
-      // තිත් පේළි 8ක් දක්වා වැඩි කර ඇත (එක් එක් පේළියේ ඇති තිත් ගණන)
-      var numberOfDotsEach = { line: [, 16, , 30, , 45, , 60] };
-
-      var lightingModes = [
-        "rainbowWave", "pulse", "colorBands", "sparkle", "chase",
-        "meteor", "ripple", "gradientSpin", "solarFlare", "binaryTwinkle",
-        "spiralOrbit", "breathingAurora", "neonTunnel", "glitchFlash",
-        "plasmaRipple", "fireflyDance", "digitalRain", "galaxySwirl",
-        "scannerSweep", "bubbleRise", "syncBlast"
-      ];
-
+      var lightingModes = ["rainbowWave", "pulse", "colorBands", "sparkle", "chase", "meteor", "ripple", "gradientSpin", "solarFlare", "binaryTwinkle", "spiralOrbit", "breathingAurora", "neonTunnel", "glitchFlash", "plasmaRipple", "fireflyDance", "digitalRain", "galaxySwirl", "scannerSweep", "bubbleRise", "syncBlast"];
       var currentModeIndex = 0;
-      var frameCount = 0;
-
       setInterval(() => { currentModeIndex = (currentModeIndex + 1) % lightingModes.length; }, 10000);
 
-      var centerCircleFillerPattern = function (frameCount, time) {
-        let lightingMode = lightingModes[currentModeIndex];
+      var dotsForSmallCircle = { numberOfDots: [35, 35, 76], radii: [0.7, 0.8, 0.9] };
+      var ringPatterns = ["rainbow", "chase", "twinkle"];
 
-        for (var i4 = 0; i4 < numberOfDotsEach.line.length; i4++) {
-          for (var i3 = 0; i3 < numberOfDotsEach.line[i4]; i3++) {
-            var plotAngle = 2 * Math.PI / numberOfDotsEach.line[i4] * i3;
+      var sequencePatterns = ["rainbow", "wave", "pulse", "chase", "comet", "twinkle"];
+      var currentSequenceIndex = 0;
 
-            // පිළිමය මත ලයිට් වැටීම නැවැත්වීම
-            if (plotAngle > Math.PI / 4 && plotAngle < Math.PI / 4 * 3) continue;
+      function updateRingPatternsSequentially() {
 
-            var localR = (2 + i4) * fractionOfDispLarge * R;
-            var dotX = cx[0] + localR * Math.cos(plotAngle);
-            var dotY = cy[0] + localR * Math.sin(plotAngle);
+        for (let i = 0; i < ringPatterns.length; i++) {
+          ringPatterns[i] = sequencePatterns[currentSequenceIndex];
+        }
 
+
+        currentSequenceIndex++;
+
+
+        if (currentSequenceIndex >= sequencePatterns.length) {
+          currentSequenceIndex = sequencePatterns.length - 1;
+         
+          currentSequenceIndex = 0;
+        }
+      }
+      setInterval(updateRingPatternsSequentially, 6000);
+
+      var numberOfDotsEach = { line: [, 16, , 30, , 45, , 60] };
+
+      // --- Animation Drawing Functions ---
+
+      var drawRadialDotGrid = function (frameCount) {
+        var numRays = 8;
+        var dotsPerRay = 8;
+        var startDist = R * 1.15;
+        var endDist = R * 1.75;
+        for (var i = 0; i < numRays; i++) {
+          var angle = (2 * Math.PI / numRays) * i + (Math.PI / numRays);
+          for (var j = 0; j < dotsPerRay; j++) {
+            var pulse = Math.sin(frameCount * 0.15 - j * 0.4);
+            var opacity = pulse > 0.5 ? 1.0 : 0.2;
+            var dist = startDist + (j / (dotsPerRay - 1)) * (endDist - startDist);
+            var x = cx[0] + dist * Math.cos(angle);
+            var y = cy[0] + dist * Math.sin(angle);
+            var hue = 200 + (j * 15);
             context.beginPath();
-            let color;
-            switch (lightingMode) {
-              case "pulse":
-                let pulse = 0.4 + 0.4 * Math.sin(time / 500 + i4 * 0.5 + i3 * 0.05);
-                color = `hsla(${(frameCount * 0.5 + i4 * 20) % 360}, 100%, 60%, ${pulse})`;
-                break;
-              case "ripple":
-                let centerDist = Math.sqrt(Math.pow(dotX - cx[0], 2) + Math.pow(dotY - cy[0], 2));
-                let ripplePos = ((frameCount * 2) % 100) / 100 * R * 0.8;
-                let rippleDist = Math.abs(centerDist - ripplePos);
-                if (rippleDist < R * 0.1) {
-                  let intensity = 1 - rippleDist / (R * 0.1);
-                  color = `rgba(0, ${150 * intensity}, 255, ${intensity})`;
-                } else {
-                  color = 'rgba(0, 50, 100, 0.2)';
-                }
-                break;
-              case "bubbleRise":
-                let bubblePos = (frameCount * 0.4 + i4 * 10) % numberOfDotsEach.line[i4];
-                let dist = i3 - bubblePos;
-                if (dist > -3 && dist < 0) {
-                  let intensity = 1 + dist / 3;
-                  color = `rgba(0, 255, 255, ${intensity})`;
-                } else {
-                  color = 'rgba(10, 30, 50, 0.05)';
-                }
-                break;
-              default:
-                color = `hsl(${(frameCount * 0.5 + i4 * 20) % 360}, 100%, 60%)`;
-            }
-
-            context.fillStyle = color;
-            let dotSize = flowerCenterDotSize;
-            if (lightingMode === "sparkle" && color.includes('255, 255, 255')) dotSize *= 1.5 + Math.random();
-            else if (["chase", "meteor", "ripple"].includes(lightingMode)) dotSize *= 1.2;
-
-            context.arc(dotX, dotY, dotSize, 0, 2 * Math.PI, false);
+            context.fillStyle = `hsla(${hue}, 100%, 60%, ${opacity})`;
+            context.arc(x, y, dotSizeMedium * 1.2, 0, Math.PI * 2);
             context.fill();
             context.closePath();
           }
         }
       };
-      // වෙනම ලූප් එකක් ලෙස මෙය ක්‍රියාත්මක කරන්න (එවිට අනෙක් ඒවාට බාධාවක් නැත)
-      function animateNewLights() {
-        // අනෙක් දේවල් මකන්න එපා, අවශ්‍ය නම් පමණක් මෙතනින් ලයිට් පේළි අඳින්න
-        drawRadialDotGrid(frameCount);
-
-        requestAnimationFrame(animateNewLights);
-      }
-
-      // animate() function එක ඇතුලේ ලයිට් අඳින කොටස ඉවත් කරන්න
-      // ඒ වෙනුවට වෙනම ලූප් එකක් ලෙස මෙය පටන් ගන්න
-      animateNewLights();
-
-      function animate() {
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-
-        // 1. මුලින්ම ලයිට් රටාව අඳින්න
-        centerCircleFillerPattern(frameCount, performance.now());
 
 
+      // =========================
+      // NEW: Triangle Dot Pattern 
+      // =========================
+      var filTriangle = function () {
+        var timeOffset = Date.now() * 0.002;
+        var dotNumbers = [4, 3, 3, 2, 2, 1]; // තිත් විහිදෙන ප්‍රමාණයන්
+        var fr = 0.1; // පරතරය
 
-        // 2. පින්තූරය ලෝඩ් වී ඇත්දැයි බලන්න (imageCenter.complete යනු වැදගත් පරීක්ෂාවක්)
-        if (imageCenter && imageCenter.complete) {
-          // මෙහි x, y, width, height වෙනුවට ඔබේ අගයන් ආදේශ කරන්න
-          // උදාහරණයක් ලෙස: (cx[0] - dim/2, cy[0] - dim/2, dim, dim)
-          context.drawImage(imageCenter, cx[0] - R * Math.sin(Math.PI / 6) - w * 0.00365, cy[0] - 0.019 * w, dim + 0.018 * w, dim + 0.015 * w);
+        var outShift = 1.4;
+
+        for (var i = 1; i < 7; i++) {
+
+          var plotAngle = (1 + 2 * i) * Math.PI / 8;
+
+          for (var i4 = -3; i4 < 3; i4++) {
+            // (1 + fr * i4) වෙනුවට අලුත් (outShift + fr * i4) යොදා ඇත
+            let pointX = cx[0] + R * (outShift + fr * i4) * Math.sin(plotAngle);
+            let pointY = cy[0] + R * (outShift + fr * i4) * Math.cos(plotAngle);
+
+            let hue = ((i * 45) + (i4 * 20) + timeOffset * 50) % 360;
+            let alpha = 0.4 + 0.6 * Math.sin(timeOffset + i4);
+            context.fillStyle = `hsla(${hue}, 100%, 60%, ${alpha})`;
+
+            context.beginPath();
+            context.arc(pointX, pointY, dotSizeMedium, 0, Math.PI * 2, false);
+            context.fill();
+            context.closePath();
+
+            // ත්‍රිකෝණයක හැඩයට දෙපසට විහිදෙන තිත්
+            for (var k = 0; k < dotNumbers[i4 + 3]; k++) {
+              var newAngle1 = plotAngle + k * Math.PI / 36;
+              var x1 = cx[0] + R * (outShift + fr * i4) * Math.sin(newAngle1);
+              var y1 = cy[0] + R * (outShift + fr * i4) * Math.cos(newAngle1);
+
+              context.fillStyle = `hsla(${(hue + 20) % 360}, 100%, 60%, ${alpha})`;
+              context.beginPath();
+              context.arc(x1, y1, dotSizeMedium, 0, Math.PI * 2, false);
+              context.fill();
+              context.closePath();
+
+              var newAngle2 = plotAngle - k * Math.PI / 36;
+              var x2 = cx[0] + R * (outShift + fr * i4) * Math.sin(newAngle2);
+              var y2 = cy[0] + R * (outShift + fr * i4) * Math.cos(newAngle2);
+
+              context.fillStyle = `hsla(${(hue - 20) % 360}, 100%, 60%, ${alpha})`;
+              context.beginPath();
+              context.arc(x2, y2, dotSizeMedium, 0, Math.PI * 2, false);
+              context.fill();
+              context.closePath();
+            }
+          }
         }
-
-        frameCount++;
-        requestAnimationFrame(animate);
-      }
-      animate();
-
-      var intensity = 1.5;
-      var dotSize = 0.003 * w;
-      var dotSizeMedium = 0.75 * dotSize;
-
-      var dotsForSmallCircle = {
-        numberOfDots: [35, 35, 76],
-        radii: [0.7, 0.8, 0.9]
       };
 
-      var availablePatterns = ["rainbow", "wave", "pulse", "chase", "twinkle", "comet"];
-      var ringPatterns = ["rainbow", "chase", "twinkle"];
+      // ==========================
+      // NEW: Center Flower Pattern 
+      // ==========================
+      var centerCircleFlowerPattern = function () {
+        var timeOffset = Date.now() * 0.001;
 
-      function randomizeRingPatterns() {
-        for (let i = 0; i < ringPatterns.length; i++) {
-          ringPatterns[i] = availablePatterns[Math.floor(Math.random() * availablePatterns.length)];
+        var flowerCenter = 1.43 * R;
+        var countOuterFlowers = 8;
+        var flowerLevel1FormCenter = 0.028 * w;
+        var flowerCenterDotSize = 0.009 * w;
+        var flowerOuterDotSize = 0.008 * w;
+
+        for (var i1 = 0; i1 < 8; i1++) {
+
+          if (i1 !== 2) continue; //
+
+          var flowerCenterAngle = Math.PI / 4 * i1;
+          var flowerX = cx[0] + flowerCenter * Math.cos(flowerCenterAngle);
+          var flowerY = cy[0] + flowerCenter * Math.sin(flowerCenterAngle);
+
+          var centerPulse = Math.sin(timeOffset * 1.5 + i1 * 0.5) * 0.3 + 0.7;
+          var centerHue = (i1 * 45 + timeOffset * 30) % 360;
+
+          context.beginPath();
+          context.fillStyle = "hsla(" + centerHue + ", 100%, 70%, " + (0.7 + 0.3 * Math.sin(timeOffset + i1)) + ")";
+          context.arc(flowerX, flowerY, flowerCenterDotSize * centerPulse, 0, Math.PI * 2, false);
+          context.fill();
+          context.closePath();
+
+          for (var i2 = 0; i2 < countOuterFlowers; i2++) {
+            var flowerOuterDotAngle = flowerCenterAngle + 2 * Math.PI / countOuterFlowers * i2;
+            var petalDistance = flowerLevel1FormCenter * (1 + 0.2 * Math.sin(timeOffset * 2 + i2 * 0.7));
+
+            var level2posX = flowerX + petalDistance * Math.cos(flowerOuterDotAngle);
+            var level2posY = flowerY + petalDistance * Math.sin(flowerOuterDotAngle);
+
+            var petalHue = (centerHue + 180 + i2 * 10) % 360;
+
+            context.beginPath();
+            context.strokeStyle = "hsla(" + petalHue + ", 100%, 50%, 0.3)";
+            context.lineWidth = 1.5;
+            context.moveTo(flowerX, flowerY);
+            context.lineTo(level2posX, level2posY);
+            context.stroke();
+            context.closePath();
+
+            context.beginPath();
+            context.fillStyle = "hsla(" + petalHue + ", 100%, 50%, " + (0.5 + 0.5 * Math.sin(timeOffset + i2 * 0.3)) + ")";
+            context.arc(
+              level2posX,
+              level2posY,
+              flowerOuterDotSize * (0.8 + 0.4 * Math.sin(timeOffset * 1.5 + i2)),
+              0,
+              Math.PI * 2,
+              false
+            );
+            context.fill();
+            context.closePath();
+          }
         }
-      }
-      setInterval(randomizeRingPatterns, 6000);
+      };
 
       var drawInnerCirclePattern = function (frameCount, time) {
         for (var k = 0; k < dotsForSmallCircle.radii.length; k++) {
           let mode = ringPatterns[k];
-
           for (var j = 1; j < cx.length; j++) {
             if (j === 1) continue;
             for (var i = 0; i < dotsForSmallCircle.numberOfDots[k]; i++) {
               let angle = (2 * Math.PI / dotsForSmallCircle.numberOfDots[k]) * i;
-
               let maxCosSin = Math.max(Math.abs(Math.cos(angle)), Math.abs(Math.sin(angle)));
               let localX = r * dotsForSmallCircle.radii[k] * (Math.cos(angle) / maxCosSin);
               let localY = r * dotsForSmallCircle.radii[k] * (Math.sin(angle) / maxCosSin);
@@ -850,41 +561,22 @@
                 let rotAngle = 45 * Math.PI / 180;
                 let rx = localX * Math.cos(rotAngle) - localY * Math.sin(rotAngle);
                 let ry = localX * Math.sin(rotAngle) + localY * Math.cos(rotAngle);
-                localX = rx;
-                localY = ry;
+                localX = rx; localY = ry;
               }
 
               let dotX = cx[j] + localX;
               let dotY = cy[j] + localY;
-
               let color;
               let size = dotSizeMedium;
 
               switch (mode) {
-                case "rainbow":
-                  color = `hsl(${(i * 360 / dotsForSmallCircle.numberOfDots[k] + frameCount * 2) % 360}, 100%, 60%)`;
-                  break;
-                case "wave":
-                  let group = Math.floor((i + frameCount / 10) / 5) % 3;
-                  color = group === 0 ? "rgba(255, 50, 50, 1)" : (group === 1 ? "rgba(50, 255, 50, 1)" : "rgba(50, 50, 255, 1)");
-                  break;
-                case "pulse":
-                  let pulse = 0.5 + 0.5 * Math.sin((time + i * 100) / 300);
-                  color = i % 2 === 0 ? `rgba(255, 255, 0, ${pulse})` : `rgba(255, 0, 255, ${pulse})`;
-                  break;
-                case "chase":
-                  let distance = Math.abs(i - ((frameCount * 0.2) % dotsForSmallCircle.numberOfDots[k]));
-                  color = distance < 5 ? `rgba(0, 255, 180, ${1 - (distance / 5)})` : `rgba(0, 100, 80, 0.2)`;
-                  break;
-                case "twinkle":
-                  color = Math.random() > 0.97 ? "rgba(255, 255, 255, 1)" : "rgba(200, 200, 255, 0.2)";
-                  break;
-                case "comet":
-                  let cometDist = Math.abs(i - ((frameCount * 0.3) % dotsForSmallCircle.numberOfDots[k]));
-                  color = cometDist < 8 ? `rgba(255, 255, 200, ${1 - (cometDist / 8)})` : "rgba(100, 100, 150, 0.1)";
-                  break;
-                default:
-                  color = `rgba(255, 255, 255, ${intensity})`;
+                case "rainbow": color = `hsl(${(i * 360 / dotsForSmallCircle.numberOfDots[k] + frameCount * 2) % 360}, 100%, 60%)`; break;
+                case "wave": let group = Math.floor((i + frameCount / 10) / 5) % 3; color = group === 0 ? "rgba(255, 50, 50, 1)" : (group === 1 ? "rgba(50, 255, 50, 1)" : "rgba(50, 50, 255, 1)"); break;
+                case "pulse": let pulse = 0.5 + 0.5 * Math.sin((time + i * 100) / 300); color = i % 2 === 0 ? `rgba(255, 255, 0, ${pulse})` : `rgba(255, 0, 255, ${pulse})`; break;
+                case "chase": let distance = Math.abs(i - ((frameCount * 0.2) % dotsForSmallCircle.numberOfDots[k])); color = distance < 5 ? `rgba(0, 255, 180, ${1 - (distance / 5)})` : `rgba(0, 100, 80, 0.2)`; break;
+                case "twinkle": color = Math.random() > 0.1 ? "rgba(255, 255, 255, 1)" : "rgba(200, 200, 255, 0.2)"; break;
+                case "comet": let cometDist = Math.abs(i - ((frameCount * 0.3) % dotsForSmallCircle.numberOfDots[k])); color = cometDist < 8 ? `rgba(255, 255, 200, ${1 - (cometDist / 8)})` : "rgba(100, 100, 150, 0.1)"; break;
+                default: color = `rgba(255, 255, 255, 15)`;
               }
 
               context.beginPath();
@@ -897,131 +589,82 @@
         }
       };
 
-      function animate1() {
-        frameCount++;
-        let time = Date.now();
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        drawInnerCirclePattern(frameCount, time);
-        requestAnimationFrame(animate1);
-      }
-      requestAnimationFrame(animate1);
+      var centerCircleFillerPattern = function (frameCount, time) {
+        let lightingMode = lightingModes[currentModeIndex];
+        for (var i4 = 0; i4 < numberOfDotsEach.line.length; i4++) {
+          for (var i3 = 0; i3 < numberOfDotsEach.line[i4]; i3++) {
+            var plotAngle = 2 * Math.PI / numberOfDotsEach.line[i4] * i3;
+            if (plotAngle > Math.PI / 4 && plotAngle < Math.PI / 4 * 3) continue;
 
-      const NUM_MODES = 12;
-      const MODE_INTERVAL = 2.5;
-      const DOT_COUNT = 15;
+            var localR = (2 + i4) * fractionOfDispLarge * R;
+            var dotX = cx[0] + localR * Math.cos(plotAngle);
+            var dotY = cy[0] + localR * Math.sin(plotAngle);
+            let color;
 
-      function getCurrentMode(time) { return Math.floor(time / MODE_INTERVAL) % NUM_MODES; }
+            switch (lightingMode) {
+              case "pulse": let pulse = 0.4 + 0.4 * Math.sin(time / 500 + i4 * 0.5 + i3 * 0.05); color = `hsla(${(frameCount * 0.5 + i4 * 20) % 360}, 100%, 60%, ${pulse})`; break;
+              case "ripple": let centerDist = Math.sqrt(Math.pow(dotX - cx[0], 2) + Math.pow(dotY - cy[0], 2)); let ripplePos = ((frameCount * 2) % 100) / 100 * R * 0.8; let rippleDist = Math.abs(centerDist - ripplePos); if (rippleDist < R * 0.1) { let intensity = 1 - rippleDist / (R * 0.1); color = `rgba(0, ${150 * intensity}, 255, ${intensity})`; } else { color = 'rgba(0, 50, 100, 0.2)'; } break;
+              case "bubbleRise": let bubblePos = (frameCount * 0.4 + i4 * 10) % numberOfDotsEach.line[i4]; let dist = i3 - bubblePos; if (dist > -3 && dist < 0) { let intensity = 1 + dist / 3; color = `rgba(0, 255, 255, ${intensity})`; } else { color = 'rgba(10, 30, 50, 0.05)'; } break;
+              default: color = `hsl(${(frameCount * 0.5 + i4 * 20) % 360}, 100%, 60%)`;
+            }
 
-      const dynamicModes = [
-        (i, j, progress, angle, dist) => ({ on: Math.random() < 0.15 + 0.1 * Math.sin(progress * 10 + dist * 20), color: `hsl(${20 + 10 * Math.sin(progress * 3)}, 100%, ${50 + 30 * Math.random()}%)` }),
-        (i, j, progress, angle) => ({ on: true, color: `hsl(${(angle * 180 / Math.PI + progress * 360) % 360}, ${70 + 30 * Math.sin(progress * 2)}%, ${40 + 20 * Math.sin(progress * 5 + angle * 2)}%)` }),
-      ];
+            context.beginPath();
+            context.fillStyle = color;
+            let currentDotSize = flowerCenterDotSize;
+            if (lightingMode === "sparkle" && color.includes('255, 255, 255')) currentDotSize *= 1.5 + Math.random();
+            else if (["chase", "meteor", "ripple"].includes(lightingMode)) currentDotSize *= 1.2;
 
-      function drawOuterLine() {
-        const currentTime = Date.now() * 0.002;
-        const mode = getCurrentMode(currentTime) || 0;
-        const progress = (currentTime % MODE_INTERVAL) / MODE_INTERVAL;
-        const fr = 0.1;
-        const alpha = 0.625 * Math.PI - Math.acos(1 / (1 + fr));
-      }
-
-      function animate4() {
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        drawOuterLine();
-        requestAnimationFrame(animate4);
-      }
-      animate4();
-
-      let patternMode = 0;
-      setInterval(() => { patternMode = (patternMode + 1) % 8; }, 3000);
-
-      var fr = 0.1;
-      var currentPattern = "rainbow";
-      var nextPattern = "wave";
-      var patternTransitionProgress = 1;
-      var isPatternTransitioning = false;
-
-
-
-      function animate3() {
-        context.clearRect(0, 0, canvasWidth, canvasHeight);
-        filTriangle();
-        requestAnimationFrame(animate3);
-      }
-      requestAnimationFrame(animate3);
-
-      var image1 = new Image(); image1.src = "images/aa1.png";
-      image1.onload = () => { context.drawImage(image1, cx[8] - r * fractionOfDispSmall, cy[8] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      var image2 = new Image(); image2.src = "images/aa2.png";
-      image2.onload = () => { context.drawImage(image2, cx[7] - r * fractionOfDispSmall, cy[7] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      var image3 = new Image(); image3.src = "images/aa3.png";
-      image3.onload = () => { context.drawImage(image3, cx[6] - r * fractionOfDispSmall, cy[6] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      var image4 = new Image(); image4.src = "images/aa4.png";
-      image4.onload = () => { context.drawImage(image4, cx[5] - r * fractionOfDispSmall, cy[5] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      var image5 = new Image(); image5.src = "images/aa5.png";
-      image5.onload = () => { context.drawImage(image5, cx[4] - r * fractionOfDispSmall, cy[4] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      var image6 = new Image(); image6.src = "images/aa6.png";
-      image6.onload = () => { context.drawImage(image6, cx[3] - r * fractionOfDispSmall, cy[3] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      var image7 = new Image(); image7.src = "images/aa7.png";
-      image7.onload = () => { context.drawImage(image7, cx[2] - r * fractionOfDispSmall, cy[2] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r); };
-
-      const image8 = new Image(); image8.src = "images/aa8.png";
-      image8.onload = () => {
-        setInterval(() => {
-          context.clearRect(0, 0, canvasWidth, canvasHeight);
-          drawLightBorder();
-
-        }, 100);
+            context.arc(dotX, dotY, currentDotSize, 0, 2 * Math.PI, false);
+            context.fill();
+            context.closePath();
+          }
+        }
       };
 
-      var imageCenter = new Image();
-      var dim = 2 * R * Math.sin(Math.atan(0.5));
-      imageCenter.src = "images/budda.webp";
-      imageCenter.onload = () => { };
+      let lineFrameCount = 0;
+      function drawAnimatedDiagonalLine() {
 
-      var makara_height = 152; var makara_width = makara_height * 2;
-      var imageMakaraleft = new Image(); imageMakaraleft.src = 'images/pilr.png';
-      imageMakaraleft.onload = () => { context.drawImage(imageMakaraleft, pointSqx - makara_width, pointSqy, makara_width, makara_height); };
+        const startX = cx[7] + r;
+        const startY = cy[7] + r;
+        const endX = cx[0] - R;
+        const endY = cy[0] - (R / 1.5);
 
-      var imageMakaraRight = new Image(); imageMakaraRight.src = 'images/pil.png';
-      imageMakaraRight.onload = () => { context.drawImage(imageMakaraRight, pointSqx + dimPointSqx, pointSqy, makara_width, makara_height); };
+        const numDots = 8;
+        const currentDotSize = 5;
+        let activeDot = Math.floor(lineFrameCount / 10) % numDots;
 
-      // හිඩැස් පිරවීම සඳහා මැද සිට විහිදෙන ලයිට් රටාව (Sunburst Rays)
-      var rayFrameCount = 0;
-      var drawGapFillers = function () {
-        rayFrameCount++;
-        var numRays = 16; // වටේටම විහිදෙන රේඛා ගණන
-        var dotsPerRay = 8; // එක රේඛාවක තියෙන බල්බ් ගණන
+        for (let i = 0; i < numDots; i++) {
+          let x = startX + (endX - startX) * (i / (numDots - 1));
+          let y = startY + (endY - startY) * (i / (numDots - 1));
+          let opacity = (i === activeDot) ? 1.0 : 0.1;
 
-        // පටන් ගන්න දුර (සුදු රවුමට පිටින්) සහ අවසන් වෙන දුර (රාමු වලට ඇතුළින්)
+          context.beginPath();
+          context.fillStyle = `rgba(204, 51, 255, ${opacity})`;
+          context.arc(x, y, currentDotSize, 0, Math.PI * 2);
+          context.fill();
+          context.closePath();
+        }
+        lineFrameCount++;
+      }
+
+      var drawGapFillers = function (rayFrameCount) {
+        var numRays = 16;
+        var dotsPerRay = 8;
         var startR = R * 0.95;
         var endR = distanceToCenter - (r * 1.2);
         var stepR = (endR - startR) / dotsPerRay;
 
         for (var i = 0; i < numRays; i++) {
-          // හරියටම රාමු අතර තියෙන හිඩැසට ලයිට් පේළිය යොමු කිරීම
           var angle = (Math.PI * 2 / numRays) * i + (Math.PI / 16);
-
           for (var j = 0; j < dotsPerRay; j++) {
             var currentR = startR + (stepR * j);
             var dotX = cx[0] + currentR * Math.cos(angle);
             var dotY = cy[0] + currentR * Math.sin(angle);
-
-            // එළියට විහිදෙන Animation එක හැදීම
             var phase = (rayFrameCount * 2 - j * 10) % 360;
-
-            // පාට සහ එළිය අඩුවැඩි වීම
             var hue = (i * 22.5 + rayFrameCount) % 360;
             var alpha = (Math.sin(phase * Math.PI / 180) + 1) / 2;
 
             context.beginPath();
-            // මෙතනට කොටු අවශ්‍ය නම් context.rect() යොදන්න, රවුම් ලස්සන නිසා arc යොදා ඇත
             context.fillStyle = `hsla(${hue}, 100%, 60%, ${0.1 + alpha * 0.9})`;
             context.arc(dotX, dotY, dotSizeMedium * 1.5, 0, Math.PI * 2);
             context.fill();
@@ -1030,18 +673,112 @@
         }
       };
 
+      // === MAIN ANIMATION LOOP ===
+      let frameCount = 0;
 
-      var triggerTime = 250;
-      // හිඩැස් පිරවීම සඳහා මැද සිට විහිදෙන ලයිට් රටාව (Sunburst Rays)
-      var rayFrameCount = 0;
-      setInterval(drawInnerCirclePattern, triggerTime);
-      setInterval(centerCircleFillerPattern, triggerTime);
-      setInterval(centerCircleFlowerPattern, triggerTime / 2);
-      setInterval(drawOuterLine, triggerTime);
-      setInterval(filTriangle, triggerTime);
+      function mainAnimate() {
+        context.clearRect(0, 0, w, h);
+        let time = Date.now();
 
-      // අලුතින් එකතු කරපු හිඩැස් පුරවන ලයිට් එක
-      setInterval(drawGapFillers, 50);
+        // 1. Draw Base Geometric Shapes
+        for (var i = 0; i < cx.length; i++) {
+          if (i === 1) continue;
+          context.save();
+          context.translate(cx[i], cy[i]);
+          if (i === 3 || i === 5 || i === 7) { context.rotate(45 * Math.PI / 180); }
+
+          context.beginPath();
+          // context.strokeStyle = "#FFD700";
+          context.fillStyle = "rgba(0,0,0,1)";
+          context.lineWidth = 5;
+          if (i == 0) {
+            context.arc(0, 0, R, Math.PI * 2, false);
+          } else {
+            context.rect(-r, -r, r * 2, r * 2);
+          }
+          context.stroke();
+          context.fill();
+          context.closePath();
+          context.restore();
+        }
+
+        // 2. Draw Light Patterns
+        drawRadialDotGrid(frameCount);
+        drawInnerCirclePattern(frameCount, time);
+        centerCircleFillerPattern(frameCount, performance.now());
+        drawAnimatedDiagonalLine();
+        drawGapFillers(frameCount);
+
+        // drawGapPetals();
+
+        filTriangle();
+        centerCircleFlowerPattern();
+
+        // 3. Draw Images (Only if they are loaded)
+        if (downImage.complete && downImage.naturalWidth !== 0) {
+          context.imageSmoothingEnabled = true;
+          context.imageSmoothingQuality = 'high';
+          context.drawImage(downImage, leftImgBoxStartX, leftImgBoxStartY, R * 2.01 + 6.05 * r - imageBoxPadding * 2, rightImgBoxH);
+        }
+
+        if (imageMakaraleft.complete && imageMakaraleft.naturalWidth !== 0) context.drawImage(imageMakaraleft, pointSqx - makara_width, pointSqy, makara_width, makara_height);
+        if (imageMakaraRight.complete && imageMakaraRight.naturalWidth !== 0) context.drawImage(imageMakaraRight, pointSqx + dimPointSqx, pointSqy, makara_width, makara_height);
+
+        if (image1.complete && image1.naturalWidth !== 0) context.drawImage(image1, cx[8] - r * fractionOfDispSmall, cy[8] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        //if (image2.complete && image2.naturalWidth !== 0) context.drawImage(image2, cx[7] - r * fractionOfDispSmall, cy[7] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        if (image3.complete && image3.naturalWidth !== 0) context.drawImage(image3, cx[6] - r * fractionOfDispSmall, cy[6] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        //if (image4.complete && image4.naturalWidth !== 0) context.drawImage(image4, cx[5] - r * fractionOfDispSmall, cy[5] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        if (image5.complete && image5.naturalWidth !== 0) context.drawImage(image5, cx[4] - r * fractionOfDispSmall, cy[4] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        //if (image6.complete && image6.naturalWidth !== 0) context.drawImage(image6, cx[3] - r * fractionOfDispSmall, cy[3] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        if (image7.complete && image7.naturalWidth !== 0) context.drawImage(image7, cx[2] - r * fractionOfDispSmall, cy[2] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        
+        // Draw Center Image (Buddha) last so it stays on top
+        if (imageCenter.complete && imageCenter.naturalWidth !== 0) {
+          context.drawImage(imageCenter, cx[0] - R * Math.sin(Math.PI / 6) - w * 0.00365, cy[0] - 0.019 * w, dim + 0.018 * w, dim + 0.015 * w);
+        }
+
+        frameCount++;
+        requestAnimationFrame(mainAnimate);
+
+
+        if (image1.complete && image1.naturalWidth !== 0) context.drawImage(image1, cx[8] - r * fractionOfDispSmall, cy[8] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        
+        // Rotated Image 2
+        if (image2.complete && image2.naturalWidth !== 0) {
+          context.save();
+          context.translate(cx[7], cy[7]);
+          context.rotate(45 * Math.PI / 180);
+          context.drawImage(image2, -r * fractionOfDispSmall, -r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+          context.restore();
+        }
+        
+        if (image3.complete && image3.naturalWidth !== 0) context.drawImage(image3, cx[6] - r * fractionOfDispSmall, cy[6] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        
+        // Rotated Image 4
+        if (image4.complete && image4.naturalWidth !== 0) {
+          context.save();
+          context.translate(cx[5], cy[5]);
+          context.rotate(45 * Math.PI / 180);
+          context.drawImage(image4, -r * fractionOfDispSmall, -r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+          context.restore();
+        }
+        
+        if (image5.complete && image5.naturalWidth !== 0) context.drawImage(image5, cx[4] - r * fractionOfDispSmall, cy[4] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+        
+        // Rotated Image 6
+        if (image6.complete && image6.naturalWidth !== 0) {
+          context.save();
+          context.translate(cx[3], cy[3]);
+          context.rotate(45 * Math.PI / 180);
+          context.drawImage(image6, -r * fractionOfDispSmall, -r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+          context.restore();
+        }
+        
+        if (image7.complete && image7.naturalWidth !== 0) context.drawImage(image7, cx[2] - r * fractionOfDispSmall, cy[2] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
+      }
+
+      // Start the main loop
+      mainAnimate();
     }
   </script>
 </body>

@@ -1,200 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Story Page</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-    }
 
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-image: url('../images/back.gif');
-      background-size: cover;
-      background-repeat: no-repeat;
-      background-position: center;
-      background-attachment: fixed;
-      color: rgb(11, 8, 8);
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 20px;
-    }
+  <!-- External CSS -->
+  <link rel="stylesheet" href="style.css">
 
-    .container1 {
-      background-color: rgb(216, 213, 213);
-      border-radius: 15px;
-      padding: 20px 20px;
-      max-width: 500px;
-      width: 100%;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    .logo-header {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 5px;
-    }
-
-    .logo-header img {
-      width: 280px;
-      height: auto;
-    }
-
-    .main-title {
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
-    }
-
-    .top-bar {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-
-    .views {
-      font-size: 14px;
-    }
-
-    .circle-wrapper {
-      position: relative;
-      width: 370px;
-      height: 370px;
-      margin: 20px auto;
-    }
-
-    /* Updated border styles */
-    .gif-border {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 440px;
-      height: 440px;
-      z-index: 1;
-    }
-
-    .gif-border img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .circle-container {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 350px;
-      height: 350px;
-      border-radius: 50%;
-      overflow: hidden;
-      cursor: pointer;
-      z-index: 2;
-    }
-
-    /* Removed the ::before pseudo-element */
-
-    .circle-container img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-
-    .play-button {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px;
-      height: 50px;
-      background: red;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 3;
-    }
-
-    .play-button.play::before {
-      content: '';
-      display: block;
-      width: 0;
-      height: 0;
-      border-left: 15px solid white;
-      border-top: 10px solid transparent;
-      border-bottom: 10px solid transparent;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 2rem;
-      justify-content: center;
-      margin-top: 2rem;
-    }
-
-    .action-button {
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: white;
-      border: none;
-      padding: 0.8rem 2rem;
-      font-size: 1.1rem;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .action-button:hover {
-      background: linear-gradient(135deg, #2575fc, #6a11cb);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .social-share {
-      margin-top: 20px;
-    }
-
-    .social-share img {
-      width: 30px;
-      margin: 0 5px;
-      cursor: pointer;
-    }
-  </style>
+  <!-- Google Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Sans+Sinhala:wght@400;600&display=swap"
+    rel="stylesheet">
 </head>
+
 <body>
+
   <div class="container1">
+
+    <!-- Close Button -->
+    <a href="../index.html" class="close-btn" title="Close">&#10006;</a>
+
     <div class="logo-header">
-      <img src="../images/123.png" alt="Logo" />
+      <img src="../images/123.png" alt="Logo">
       <div class="main-title">ඉදිරිපත් කරන ඩිජිටල් තොරණ</div>
     </div>
 
     <div class="top-bar">
-      <div class="views">1 Views</div>
+      <div class="views">6</div>
     </div>
 
-    <!-- Start: GIF Border with Centered Circle -->
     <div class="circle-wrapper">
-      <!-- The border GIF is now correctly placed below the content image -->
       <div class="gif-border">
-        <img src="../images/bor.gif" alt="Animated Border" />
+        <img src="../images/bor.gif" alt="">
       </div>
       <div class="circle-container" id="imageContainer">
-        <img src="../images/a6.gif" alt="Story Image" />
+        <img src="../images/a6.gif" alt="Story">
         <div class="play-button play" id="playBtn"></div>
       </div>
     </div>
-    <!-- End -->
 
     <audio id="storyAudio" src="../audio/6.mp3"></audio>
 
@@ -203,10 +51,19 @@
       <a href="page7.html"><button class="action-button">මීළඟ කොටුවට</button></a>
     </div>
 
+    <!-- Divider -->
+    <div class="divider"></div>
+
+    <!-- Social Media Icons -->
     <div class="social-share">
-      <a href="https://www.facebook.com/athukoralagroup.lk/"><img src="../images/facebook.png" alt="Facebook" /></a>
-      <a href="https://athukoralagroup.com/#"><img src="../images/internet.png" alt="Internet" /></a>
+      <a href="https://www.facebook.com/athukoralagroup.lk/" class="social-icon fb" target="_blank">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a href="https://athukoralagroup.com/" class="social-icon web" target="_blank">
+        <i class="fas fa-globe"></i>
+      </a>
     </div>
+
   </div>
 
   <script>
@@ -231,5 +88,7 @@
       playButton.style.display = 'flex';
     });
   </script>
+
 </body>
+
 </html>

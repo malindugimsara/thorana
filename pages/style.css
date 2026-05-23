@@ -1,0 +1,667 @@
+/* ─── Design Tokens ─────────────────────────────────────── */
+:root {
+  --gold: #f0c060;
+  --gold-light: #ffe49a;
+  --gold-dark: #b8882a;
+  --red: #e03030;
+  --red-glow: rgba(224, 48, 48, 0.55);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --overlay: rgba(0, 0, 0, 0.3);
+  --text: #fff;
+  --text-dim: rgba(255, 255, 255, 0.72);
+  --shadow-deep: 0 16px 48px rgba(0, 0, 0, 0.45);
+}
+
+/* ─── Reset & Base ──────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  font-family: "Noto Sans Sinhala", "Segoe UI", sans-serif;
+  color: var(--text);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* ─── Blurred Background ────────────────────────────────── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("../images/bgthorana.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  filter: blur(12px) brightness(0.85);
+  transform: scale(1.1);
+  z-index: -2;
+}
+
+/* Dark + subtle warm vignette overlay */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(
+      ellipse at 50% 0%,
+      rgba(180, 120, 20, 0.18) 0%,
+      transparent 65%
+    ),
+    var(--overlay);
+  z-index: -1;
+}
+
+/* ─── Ambient floating particles (CSS only) ─────────────── */
+.particles {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.particle {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--gold-light);
+  opacity: 0;
+  animation: drift linear infinite;
+}
+
+.particle:nth-child(1) {
+  width: 3px;
+  height: 3px;
+  left: 12%;
+  animation-duration: 9s;
+  animation-delay: 0s;
+}
+
+.particle:nth-child(2) {
+  width: 2px;
+  height: 2px;
+  left: 28%;
+  animation-duration: 13s;
+  animation-delay: 1.5s;
+}
+
+.particle:nth-child(3) {
+  width: 4px;
+  height: 4px;
+  left: 47%;
+  animation-duration: 10s;
+  animation-delay: 3s;
+}
+
+.particle:nth-child(4) {
+  width: 2px;
+  height: 2px;
+  left: 65%;
+  animation-duration: 14s;
+  animation-delay: 0.8s;
+}
+
+.particle:nth-child(5) {
+  width: 3px;
+  height: 3px;
+  left: 81%;
+  animation-duration: 11s;
+  animation-delay: 2.2s;
+}
+
+.particle:nth-child(6) {
+  width: 2px;
+  height: 2px;
+  left: 91%;
+  animation-duration: 8s;
+  animation-delay: 4s;
+}
+
+@keyframes drift {
+  0% {
+    opacity: 0;
+    bottom: -10px;
+    transform: translateX(0) scale(0.8);
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  85% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 0;
+    bottom: 100vh;
+    transform: translateX(30px) scale(1.2);
+  }
+}
+
+/* ─── Glass Card ────────────────────────────────────────── */
+.container1 {
+  background: var(--glass-bg);
+  backdrop-filter: blur(22px) saturate(1.4);
+  -webkit-backdrop-filter: blur(22px) saturate(1.4);
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
+  padding: 30px 28px;
+  max-width: 560px;
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    var(--shadow-deep),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.06);
+  animation: fadeUp 0.75s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Subtle inner top shimmer line */
+.container1::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+  border-radius: 50%;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(36px) scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ─── Close Button ──────────────────────────────────────── */
+.close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 34px;
+  height: 34px;
+  background: linear-gradient(135deg, #ff5555, #cc1a1a);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(220, 30, 30, 0.5);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.2s;
+  z-index: 10;
+}
+
+.close-btn:hover {
+  background: linear-gradient(135deg, #ff2222, #aa0000);
+  transform: scale(1.12) rotate(90deg);
+  box-shadow: 0 4px 16px rgba(220, 30, 30, 0.7);
+}
+
+/* ─── Logo Header ───────────────────────────────────────── */
+.logo-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.logo-header img {
+  width: 250px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.35));
+}
+
+.main-title {
+  font-family: "Cinzel", serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.6;
+  text-align: center;
+  background: linear-gradient(135deg, #a8ffb0, #22c55e, #15803d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #22c55e;
+  text-shadow: none;
+}
+
+.sub-title {
+  font-family: "Noto Sans Sinhala", "Segoe UI", sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.95),
+    rgba(220, 200, 255, 0.85)
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #fff;
+}
+
+/* ─── Views Bar ─────────────────────────────────────────── */
+.top-bar {
+  margin-bottom: 12px;
+}
+
+.views {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 20px;
+  padding: 3px 14px;
+  font-size: 13px;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+
+.views::before {
+  content: "\f06e";
+  /* fa-eye */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 11px;
+  opacity: 0.7;
+}
+
+/* ─── Circle Media Wrapper ──────────────────────────────── */
+.circle-wrapper {
+  position: relative;
+  width: 360px;
+  height: 360px;
+  margin: 10px auto 6px;
+}
+
+/* Outer animated glow ring */
+.circle-wrapper::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  background: conic-gradient(
+    var(--gold-light),
+    var(--gold-dark),
+    var(--gold-light) 120deg,
+    var(--gold-dark) 240deg,
+    var(--gold-light)
+  );
+  animation: spinRing 8s linear infinite;
+  z-index: 0;
+  opacity: 0.55;
+  filter: blur(3px);
+}
+
+@keyframes spinRing {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.gif-border {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 430px;
+  height: 430px;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.gif-border img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.circle-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 310px;
+  height: 310px;
+  border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+  z-index: 2;
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.12),
+    0 8px 30px rgba(0, 0, 0, 0.5),
+    0 0 40px rgba(180, 120, 20, 0.2);
+  transition:
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.circle-container:hover {
+  transform: translate(-50%, -50%) scale(1.025);
+  box-shadow:
+    0 0 0 4px rgba(240, 192, 96, 0.3),
+    0 12px 40px rgba(0, 0, 0, 0.6),
+    0 0 55px rgba(180, 120, 20, 0.35);
+}
+
+.circle-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+/* ─── Play Button ───────────────────────────────────────── */
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 62px;
+  height: 62px;
+  background: radial-gradient(
+    circle at 40% 35%,
+    #ff5555,
+    var(--red) 60%,
+    #990000
+  );
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 3;
+  box-shadow:
+    0 0 0 6px rgba(255, 60, 60, 0.18),
+    0 0 24px var(--red-glow),
+    0 4px 14px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.play-button:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow:
+    0 0 0 9px rgba(255, 60, 60, 0.2),
+    0 0 36px var(--red-glow),
+    0 6px 20px rgba(0, 0, 0, 0.5);
+}
+
+.play-button.play::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-left: 20px solid #fff;
+  border-top: 13px solid transparent;
+  border-bottom: 13px solid transparent;
+  margin-left: 5px;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.3));
+}
+
+/* ─── Buttons ───────────────────────────────────────────── */
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+}
+
+.action-button {
+  position: relative;
+  background: linear-gradient(135deg, #7c1fa8, #2563eb 60%, #1a4fc4);
+  color: #fff;
+  border: none;
+  padding: 0.85rem 2.2rem;
+  font-size: 1rem;
+  font-family: "Noto Sans Sinhala", "Segoe UI", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 4px 18px rgba(80, 30, 160, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* shine sweep on hover */
+.action-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.45s ease;
+}
+
+.action-button:hover::after {
+  left: 130%;
+}
+
+.action-button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 28px rgba(80, 30, 160, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.action-button:active {
+  transform: translateY(-1px);
+}
+
+/* ─── Social Share ──────────────────────────────────────── */
+.social-share {
+  margin-top: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.contact-text {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.social-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 18px;
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.social-icon:hover {
+  transform: translateY(-4px) scale(1.12);
+  background: rgba(255, 255, 255, 0.22);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+}
+
+/* Per-brand accent on hover */
+.social-icon.fb:hover {
+  background: rgba(24, 119, 242, 0.5);
+  border-color: #1877f2;
+}
+
+.social-icon.web:hover {
+  background: rgba(16, 185, 129, 0.4);
+  border-color: #10b981;
+}
+
+/* ─── Divider ────────────────────────────────────────────── */
+.divider {
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  margin: 20px auto 0;
+}
+
+/* ─── Mobile ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .circle-wrapper {
+    width: 270px;
+    height: 270px;
+  }
+
+  .gif-border {
+    width: 330px;
+    height: 330px;
+  }
+
+  .circle-container {
+    width: 240px;
+    height: 240px;
+  }
+
+  .circle-wrapper::before {
+    width: 255px;
+    height: 255px;
+  }
+
+  .logo-header img {
+    width: 200px;
+  }
+
+  .main-title {
+    font-size: 16px;
+  }
+
+  .container1 {
+    padding: 22px 18px;
+    border-radius: 22px;
+  }
+}
+
+.action-button {
+  position: relative;
+  background: linear-gradient(135deg, #7c1fa8, #2563eb 60%, #1a4fc4);
+  color: #fff;
+  border: none;
+  padding: 0.85rem 1.6rem;
+  font-size: 1rem;
+  font-family: "Noto Sans Sinhala", "Segoe UI", sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-radius: 50px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow:
+    0 4px 18px rgba(80, 30, 160, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.action-button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -75%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.22),
+    transparent
+  );
+  transform: skewX(-20deg);
+  transition: left 0.45s ease;
+}
+
+.action-button:hover::after {
+  left: 130%;
+}
+
+.action-button:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 28px rgba(80, 30, 160, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.action-button:active {
+  transform: translateY(-1px);
+}
+
+/* ─── Buttons ───────────────────────────────────────────── */
+.buttons {
+  display: flex;
+  justify-content: center;
+  margin-top: 22px;
+  gap: 20px; /* Adjust this value (e.g., 15px, 20px, 30px) to increase space */
+}
