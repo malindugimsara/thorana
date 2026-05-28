@@ -344,6 +344,15 @@ body::after {
   font-size: 14px; /* අයිකන ඇතුළත Font ප්‍රමාණය අඩු කරන ලදී */
   transition: 0.3s;
 }
+.last-text {
+    text-align: center;
+    font-size: 14px;
+    color: #e7e407; /* Muted gray */
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif; /* Add a Sinhala supported font here if needed */
+    letter-spacing: 0.5px;
+}
 
 /* ─── Mobile Responsive (Optimized for Mobile-First) ────────────────── */
 @media (max-width: 768px) {

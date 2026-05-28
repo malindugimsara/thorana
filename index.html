@@ -268,8 +268,8 @@
           h = ww * 0.75; 
           scale = 1.35; // ෆෝන් එක හරවා ඇති විට තොරණ ලොකු කිරීම
       } else {
-          h = ww * 0.68; // Desktop
-          scale = 1.0;
+          h = ww * 0.6; // Desktop
+          scale = 0.98;
       }
       
       // --- High-DPI (Mobile) Quality Fix ---
@@ -297,7 +297,7 @@
       }
       myCanvas.addEventListener("click", fullscreen);
 
-      marginTop = 0.12;
+      marginTop = 0.15;
       marginBotom = 0.1;
 
       var k = 1.8 * Math.sqrt(2) - 1;
@@ -314,7 +314,7 @@
       } else if (isMobileLandscape) {
           cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.05); // Landscape (මඳක් උඩට)
       } else {
-          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.08); // Desktop
+          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.06); // Desktop
       }
 
       var gap = r * 0.5;
@@ -330,16 +330,16 @@
       dimPointSqy = 0.98 * h - pointSqy;
 
       // Loading all Images
-      const downImage = new Image(); downImage.src = "images/down.png";
-      const downGif = new Image(); downGif.src = "images/down.gif";
+      const downImage = new Image(); downImage.src = "images/down.jpg";
+      const downGif = new Image(); downGif.src = "images/down.jpg";
       const imageCenter = new Image(); imageCenter.src = "images/budda.webp";
       const imageMakaraleft = new Image(); imageMakaraleft.src = 'images/pilr.png';
       const imageMakaraRight = new Image(); imageMakaraRight.src = 'images/pil.png';
-      const image1 = new Image(); image1.src = "images/aa1.png";
+      const image1 = new Image(); image1.src = "images/aa1.jpg";
       const image2 = new Image(); image2.src = "images/aa2.png";
-      const image3 = new Image(); image3.src = "images/aa3.png";
+      const image3 = new Image(); image3.src = "images/aa3.jpg";
       const image4 = new Image(); image4.src = "images/aa4.jpg";
-      const image5 = new Image(); image5.src = "images/aa5.png";
+      const image5 = new Image(); image5.src = "images/aa5.jpg";
       const image6 = new Image(); image6.src = "images/aa7.png";
       const image7 = new Image(); image7.src = "images/aa8.png";
       // const image8 = new Image(); image8.src = "images/aa8.png";
