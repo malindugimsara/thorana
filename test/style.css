@@ -407,7 +407,7 @@ body::after {
   /* 3. Navigation & Close Buttons */
   .close-btn {
     top: 15px;
-    right: 30px;
+    right: 20px;
     width: 30px; /* අයිකනය මඳක් කුඩා කිරීම */
     height: 30px;
     font-size: 14px;

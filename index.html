@@ -250,26 +250,48 @@
 
     window.onload = function () {
       myCanvas = document.getElementById('myCanvas');
-      w = myCanvas.width = ww;
       
-      // ෆෝන් එකේදී Canvas එකේ උස සහ තොරණේ ප්‍රමාණය වැඩි කිරීම
-      var isMobile = ww < 768;
-      if (isMobile) {
-          h = myCanvas.height = ww * 1.4; 
+      // තිරයේ පළල (ww) සහ උස (wh) ලබා ගැනීම
+      var wh = window.innerHeight;
+      w = ww;
+      
+      // ෆෝන් එකේ හැඩය හඳුනා ගැනීම (Portrait ද Landscape ද යන්න)
+      var isMobilePortrait = ww < 768 && ww < wh;
+      var isMobileLandscape = ww > wh && wh <= 600; // ෆෝන් එක හරවා ඇති විට (Landscape)
+      
+      // තිරයට ගැලපෙන සේ Canvas එකේ උස සහ තොරණේ ප්‍රමාණය (Scale) තීරණය කිරීම
+      var scale = 1.0;
+      if (isMobilePortrait) {
+          h = ww * 1.4; 
+          scale = 1.7; // ෆෝන් එක කෙලින් ඇති විට
+      } else if (isMobileLandscape) {
+          h = ww * 0.75; 
+          scale = 1.35; // ෆෝන් එක හරවා ඇති විට තොරණ ලොකු කිරීම
       } else {
-          h = myCanvas.height = ww / 2 + 100;
+          h = ww * 0.68; // Desktop
+          scale = 1.0;
       }
       
+      // --- High-DPI (Mobile) Quality Fix ---
+      var dpr = window.devicePixelRatio || 1; 
+      
+      myCanvas.style.width = w + 'px';
+      myCanvas.style.height = h + 'px';
+      
+      myCanvas.width = w * dpr;
+      myCanvas.height = h * dpr;
+      
       context = myCanvas.getContext("2d");
+      context.scale(dpr, dpr);
+      // ------------------------------------
 
       function fullscreen() {
-        var elem = document.documentElement; // මුළු පිටුවම Full Screen කරයි
-
+        var elem = document.documentElement; 
         if (elem.requestFullscreen) {
           elem.requestFullscreen();
-        } else if (elem.webkitRequestFullscreen) { /* Safari/Chrome වලට */
+        } else if (elem.webkitRequestFullscreen) { 
           elem.webkitRequestFullscreen();
-        } else if (elem.msRequestFullscreen) { /* Edge/IE වලට */
+        } else if (elem.msRequestFullscreen) { 
           elem.msRequestFullscreen();
         }
       }
@@ -280,23 +302,24 @@
 
       var k = 1.8 * Math.sqrt(2) - 1;
       
-      // ෆෝන් එකේදී රවුම් වල සයිස් එක ලොකු කිරීම
-      var scale = isMobile ? 1.7 : 1.0; 
+      // රවුම් වල සයිස් එක අදාළ scale එකෙන් වැඩි කිරීම
       r = (((1 - (marginTop + marginBotom)) / 4) * (1 / (k + 2)) * w) * scale;
       R = (k * r) * 1;
 
       cx[0] = w / 2;
       
       // ෆෝන් එකේ සහ Desktop එකේ තොරණ පිහිටන උස වෙනස් කිරීම
-      if (isMobile) {
-          cy[0] = (h / 2) * (1 + marginTop - marginBotom); // ෆෝන් එකට සාමාන්‍ය තැන
+      if (isMobilePortrait) {
+          cy[0] = (h / 2) * (1 + marginTop - marginBotom); // Portrait
+      } else if (isMobileLandscape) {
+          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.05); // Landscape (මඳක් උඩට)
       } else {
-          // Desktop එකේදී තොරණ ටිකක් උඩට ගනී (0.08 අගය වෙනස් කිරීමෙන් උස පාලනය කළ හැක)
-          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.04); 
+          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.08); // Desktop
       }
 
       var gap = r * 0.5;
-      var distanceToCenter = R + r + gap;
+      var distanceToCenter = R + gap + r;
+      // ... (මෙතැනින් පහළට කෝඩ් එකේ ඉතුරු ටික එහෙම්මම තියන්න) ...
 
       for (var i = 0; i <= 7; i++) { cx[i + 1] = cx[0] + distanceToCenter * Math.sin(i * (Math.PI / 4)); }
       for (var i = 0; i <= 7; i++) { cy[i + 1] = cy[0] + distanceToCenter * Math.cos(i * (Math.PI / 4)); }
