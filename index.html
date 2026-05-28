@@ -173,14 +173,46 @@
         /* Slightly smaller English for mobile */
       }
     }
+
+    /* --- Loading Screen --- */
+    #loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #FFD700;
+      font-family: sans-serif;
+    }
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 5px solid rgba(255, 215, 0, 0.3);
+      border-top-color: #FFD700;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
   </style>
 </head>
 
 <body style="margin: 0; ">
 
+  <div id="loader">
+    <div class="spinner"></div>
+    <h3>තොරණ සූදානම් වෙමින් පවතී...</h3>
+  </div>
+
   <!-- Add this right after the opening body tag -->
   <video autoplay loop muted playsinline class="bg-video">
-    <source src="images/bg.mp4" type="video/mp4">
+    <source src="images/bg.webm" type="video/mp4">
   </video>
 
   <div id="sound-icon">🔇</div>
@@ -249,6 +281,7 @@
     var imageBoxPadding;
 
     window.onload = function () {
+      document.getElementById('loader').style.display = 'none';
       myCanvas = document.getElementById('myCanvas');
       
       // තිරයේ පළල (ww) සහ උස (wh) ලබා ගැනීම
@@ -266,7 +299,7 @@
           scale = 1.7; // ෆෝන් එක කෙලින් ඇති විට
       } else if (isMobileLandscape) {
           h = ww * 0.75; 
-          scale = 1.35; // ෆෝන් එක හරවා ඇති විට තොරණ ලොකු කිරීම
+          scale = 0.75; // ෆෝන් එක හරවා ඇති විට තොරණ ලොකු කිරීම
       } else {
           h = ww * 0.6; // Desktop
           scale = 0.98;
@@ -312,7 +345,7 @@
       if (isMobilePortrait) {
           cy[0] = (h / 2) * (1 + marginTop - marginBotom); // Portrait
       } else if (isMobileLandscape) {
-          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.05); // Landscape (මඳක් උඩට)
+          cy[0] = (h / 2) * (1 + marginTop - marginBotom); // Landscape (මඳක් උඩට)
       } else {
           cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.06); // Desktop
       }
@@ -333,16 +366,14 @@
       const downImage = new Image(); downImage.src = "images/down.jpg";
       const downGif = new Image(); downGif.src = "images/down.jpg";
       const imageCenter = new Image(); imageCenter.src = "images/budda.webp";
-      const imageMakaraleft = new Image(); imageMakaraleft.src = 'images/pilr.png';
-      const imageMakaraRight = new Image(); imageMakaraRight.src = 'images/pil.png';
-      const image1 = new Image(); image1.src = "images/aa1.jpg";
-      const image2 = new Image(); image2.src = "images/aa2.png";
-      const image3 = new Image(); image3.src = "images/aa3.jpg";
-      const image4 = new Image(); image4.src = "images/aa4.jpg";
-      const image5 = new Image(); image5.src = "images/aa5.jpg";
-      const image6 = new Image(); image6.src = "images/aa7.png";
-      const image7 = new Image(); image7.src = "images/aa8.png";
-      // const image8 = new Image(); image8.src = "images/aa8.png";
+      const image1 = new Image(); image1.src = "images/aa1.webp";
+      const image2 = new Image(); image2.src = "images/aa2.webp";
+      const image3 = new Image(); image3.src = "images/aa3.webp";
+      const image4 = new Image(); image4.src = "images/aa4.webp";
+      const image5 = new Image(); image5.src = "images/aa5.webp";
+      const image6 = new Image(); image6.src = "images/aa7.webp";
+      const image7 = new Image(); image7.src = "images/aa8.webp";
+      
 
       var dim = 2 * R * Math.sin(Math.atan(0.5));
       var makara_height = 152;
@@ -872,7 +903,7 @@
             
             // Shadow Effects
             context.shadowColor = "rgba(0, 0, 0, 0.9)"; 
-            context.shadowBlur = 25; 
+            //context.shadowBlur = 25; 
             context.shadowOffsetX = 0; 
             context.shadowOffsetY = 10; 
 
@@ -960,8 +991,8 @@
           context.drawImage(downImage, leftImgBoxStartX, leftImgBoxStartY, targetW, targetH);
         }
 
-        if (imageMakaraleft.complete && imageMakaraleft.naturalWidth !== 0) context.drawImage(imageMakaraleft, pointSqx - makara_width, pointSqy, makara_width, makara_height);
-        if (imageMakaraRight.complete && imageMakaraRight.naturalWidth !== 0) context.drawImage(imageMakaraRight, pointSqx + dimPointSqx, pointSqy, makara_width, makara_height);
+        //if (imageMakaraleft.complete && imageMakaraleft.naturalWidth !== 0) context.drawImage(imageMakaraleft, pointSqx - makara_width, pointSqy, makara_width, makara_height);
+        //if (imageMakaraRight.complete && imageMakaraRight.naturalWidth !== 0) context.drawImage(imageMakaraRight, pointSqx + dimPointSqx, pointSqy, makara_width, makara_height);
 
         if (image1.complete && image1.naturalWidth !== 0) context.drawImage(image1, cx[8] - r * fractionOfDispSmall, cy[8] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
         //if (image2.complete && image2.naturalWidth !== 0) context.drawImage(image2, cx[7] - r * fractionOfDispSmall, cy[7] - r * fractionOfDispSmall, fractionOfDispSmall * 2 * r, fractionOfDispSmall * 2 * r);
