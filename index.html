@@ -9,11 +9,6 @@
   <link rel="icon" type="image/x-icon" href="images/athu.png" sizes="16x16">
 
   <style>
-    
-
-    
-    
-
     body {
       width: 100vw;
       height: 100vh;
@@ -96,50 +91,71 @@
       
 
       #sound-icon {
-        font-size: 35px;
+        font-size: 20px;
         bottom: 15px;
         right: 15px;
       }
     }
 
     /* --- Full Story Button Styles --- */
+    /* --- Full Story Button Styles (Glass Effect) --- */
     #fullStoryBtn {
       position: fixed;
       top: 20px;
       right: 20px;
       padding: 10px 20px;
-      background-color: #FFD700;
-      /* Gold color */
-      color: #000;
-      /* Black text */
+      
+      /* Glassmorphism Background */
+      background: rgba(255, 255, 255, 0.1); /* අර්ධ පාරදෘශ්‍ය (Semi-transparent) සුදු */
+      backdrop-filter: blur(12px); /* පිටුපස බොඳ කරන effect එක */
+      -webkit-backdrop-filter: blur(12px); /* Safari බ්‍රව්සරය සඳහා */
+      
+      /* Glass Border & Shadow */
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+      
+      /* Text Colors & Shadow (පිටුපස වීදුරුවක් නිසා අකුරු පැහැදිලිව පේන්න) */
+      color: #ffffff; 
+      text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+      
       font-size: 16px;
-      /* Size for the main Sinhala text */
       font-weight: bold;
-      border: none;
       border-radius: 8px;
       cursor: pointer;
       z-index: 1005;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-      transition: background-color 0.3s, transform 0.2s;
+      transition: all 0.3s ease;
       text-align: center;
-      /* Centers both lines of text */
       line-height: 1.3;
-      /* Controls the space between the two lines */
     }
 
     /* Styles specifically for the English subtitle */
     #fullStoryBtn span {
       font-size: 12px;
-      /* Makes the English text smaller */
       font-weight: normal;
-      /* Removes bolding from the English text */
-      opacity: 0.8;
-      /* Makes it slightly softer than the main text */
+      color: #FFD700; /* English අකුරු වලට ලස්සන කහ/රන්වන් පාටක් */
+      opacity: 0.9;
     }
 
+    /* Hover Effect */
     #fullStoryBtn:hover {
-      background-color: #ffcc00;
+      background: rgba(255, 255, 255, 0.25); /* මවුස් එක ගෙනිච්චම එළිය ටිකක් වැඩි වෙනවා */
       transform: scale(1.05);
+      border: 1px solid rgba(255, 215, 0, 0.6); /* border එක රන්වන් පාට වෙනවා */
+      box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+    }
+
+    /* Mobile Responsive Adjustments */
+    @media (max-width: 768px) {
+      #fullStoryBtn {
+        top: 60px; /* ෆෝන් එකේ උඩින් තියෙන අනිත් අයිකන් එක්ක හැප්පෙන්නේ නැති වෙන්න පල්ලෙහාට ගෙන ඇත */
+        right: 15px;
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+
+      #fullStoryBtn span {
+        font-size: 10px;
+      }
     }
 
     /* Mobile adjustments */
@@ -219,11 +235,6 @@
       setTimeout(function () { location.reload(); }, 300);
     });
 
-    if (!sessionStorage.getItem('welcomeShown')) {
-      sessionStorage.setItem('welcomeShown', 'true');
-      window.location.href = "welcome.html";
-    }
-
     var ww = window.innerWidth;
     var hw = window.innerHeight;
     var myCanvas, context;
@@ -240,7 +251,15 @@
     window.onload = function () {
       myCanvas = document.getElementById('myCanvas');
       w = myCanvas.width = ww;
-      h = myCanvas.height = ww / 2;
+      
+      // ෆෝන් එකේදී Canvas එකේ උස සහ තොරණේ ප්‍රමාණය වැඩි කිරීම
+      var isMobile = ww < 768;
+      if (isMobile) {
+          h = myCanvas.height = ww * 1.4; 
+      } else {
+          h = myCanvas.height = ww / 2 + 100;
+      }
+      
       context = myCanvas.getContext("2d");
 
       function fullscreen() {
@@ -256,15 +275,25 @@
       }
       myCanvas.addEventListener("click", fullscreen);
 
-      marginTop = 0.15;
+      marginTop = 0.12;
       marginBotom = 0.1;
 
       var k = 1.8 * Math.sqrt(2) - 1;
-      r = ((1 - (marginTop + marginBotom)) / 4) * (1 / (k + 2)) * w;
-      R = (k * r) * 1.3;
+      
+      // ෆෝන් එකේදී රවුම් වල සයිස් එක ලොකු කිරීම
+      var scale = isMobile ? 1.7 : 1.0; 
+      r = (((1 - (marginTop + marginBotom)) / 4) * (1 / (k + 2)) * w) * scale;
+      R = (k * r) * 1;
 
       cx[0] = w / 2;
-      cy[0] = (h / 2) * (1 + marginTop - marginBotom);
+      
+      // ෆෝන් එකේ සහ Desktop එකේ තොරණ පිහිටන උස වෙනස් කිරීම
+      if (isMobile) {
+          cy[0] = (h / 2) * (1 + marginTop - marginBotom); // ෆෝන් එකට සාමාන්‍ය තැන
+      } else {
+          // Desktop එකේදී තොරණ ටිකක් උඩට ගනී (0.08 අගය වෙනස් කිරීමෙන් උස පාලනය කළ හැක)
+          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.04); 
+      }
 
       var gap = r * 0.5;
       var distanceToCenter = R + r + gap;
@@ -278,7 +307,8 @@
       dimPointSqy = 0.98 * h - pointSqy;
 
       // Loading all Images
-      const downImage = new Image(); downImage.src = "images/thorana1 (2).png";
+      const downImage = new Image(); downImage.src = "images/down.png";
+      const downGif = new Image(); downGif.src = "images/down.gif";
       const imageCenter = new Image(); imageCenter.src = "images/budda.webp";
       const imageMakaraleft = new Image(); imageMakaraleft.src = 'images/pilr.png';
       const imageMakaraRight = new Image(); imageMakaraRight.src = 'images/pil.png';
@@ -314,32 +344,33 @@
       var dotSizeMedium = 0.75 * dotSize;
       var flowerCenterDotSize = 0.004 * w;
 
-      var lightingModes = ["rainbowWave", "pulse", "colorBands", "sparkle", "chase", "meteor", "ripple", "gradientSpin", "solarFlare", "binaryTwinkle", "spiralOrbit", "breathingAurora", "neonTunnel", "glitchFlash", "plasmaRipple", "fireflyDance", "digitalRain", "galaxySwirl", "scannerSweep", "bubbleRise", "syncBlast"];
+      var lightingModes = ["rainbowWave", "pulse", "colorBands", "chase", "meteor", "ripple", "gradientSpin", "solarFlare", "binaryTwinkle", "spiralOrbit", "breathingAurora", "neonTunnel", "glitchFlash", "plasmaRipple", "fireflyDance", "digitalRain", "galaxySwirl", "scannerSweep", "bubbleRise", "syncBlast"];
       var currentModeIndex = 0;
       setInterval(() => { currentModeIndex = (currentModeIndex + 1) % lightingModes.length; }, 10000);
 
-      var dotsForSmallCircle = { numberOfDots: [35, 35, 76], radii: [0.7, 0.8, 0.9] };
-      var ringPatterns = ["rainbow", "chase", "twinkle"];
-
-      var sequencePatterns = ["rainbow", "wave", "pulse", "chase", "comet", "twinkle"];
-      var currentSequenceIndex = 0;
+      var dotsForSmallCircle = { numberOfDots: [35, 35, 76, 96], radii: [0.7, 0.8, 0.9, 1.0] };
+      // 1. ඔයාට ඕන පිළිවෙල මෙතන තියෙනවා
+      var sequencePatterns = ["rainbow", "buddhist_flag", "blocks", "wave", "pulse", "fire", "flash",  "spin", "alternate", "chase", "snake", "breathe"];      
+      var currentSequenceIndex = 0; 
+      var ringPatterns = []; 
 
       function updateRingPatternsSequentially() {
-
-        for (let i = 0; i < ringPatterns.length; i++) {
+        for (let i = 0; i < dotsForSmallCircle.radii.length; i++) {
           ringPatterns[i] = sequencePatterns[currentSequenceIndex];
         }
-
-
+        
         currentSequenceIndex++;
-
-
+        
+        // ලිස්ට් එක ඉවර වුණාම ආයෙත් මුලට යනවා
         if (currentSequenceIndex >= sequencePatterns.length) {
-          currentSequenceIndex = sequencePatterns.length - 1;
-
           currentSequenceIndex = 0;
         }
       }
+      
+      // 2. අලුත් වෙනස: Page එක ලෝඩ් වෙද්දිම තත්පර 6ක් බලන් ඉන්නේ නැතුව මුල්ම රටාව ("flash") පටන් ගන්න මේක දානවා
+      updateRingPatternsSequentially(); 
+      
+      // 3. තත්පර 6න් 6ට ඊළඟ රටාවට මාරු වෙනවා
       setInterval(updateRingPatternsSequentially, 6000);
 
       var numberOfDotsEach = { line: [, 16, , 30, , 45, , 60] };
@@ -430,7 +461,7 @@
       var centerCircleFlowerPattern = function () {
         var timeOffset = Date.now() * 0.001;
 
-        var flowerCenter = 1.43 * R;
+        var flowerCenter = 1.53 * R;
         var countOuterFlowers = 8;
         var flowerLevel1FormCenter = 0.028 * w;
         var flowerCenterDotSize = 0.009 * w;
@@ -486,17 +517,47 @@
         }
       };
 
-      var drawInnerCirclePattern = function (frameCount, time) {
+// අලුතින් boxList එකක් ලබා ගන්නවා
+      var drawInnerCirclePattern = function (frameCount, time, boxList) {
+        
+        // boxList එකක් දුන්නොත් ඒ කොටු ටික විතරක් අඳිනවා. නැත්නම් ඔක්කොම අඳිනවා.
+        let boxesToDraw = boxList ? boxList : [2, 3, 4, 5, 6, 7, 8];
+
         for (var k = 0; k < dotsForSmallCircle.radii.length; k++) {
           let mode = ringPatterns[k];
-          for (var j = 1; j < cx.length; j++) {
+          
+          // කලින් තිබුණ 'for (var j = 2; j < cx.length; j++) {' වෙනුවට:
+          for (var idx = 0; idx < boxesToDraw.length; idx++) {
+            var j = boxesToDraw[idx];
+            
             if (j === 1) continue;
+
             for (var i = 0; i < dotsForSmallCircle.numberOfDots[k]; i++) {
               let angle = (2 * Math.PI / dotsForSmallCircle.numberOfDots[k]) * i;
+              
+              // ... (ඔබේ කෝඩ් එකේ මෙතනින් පහළට තියෙන ඉතුරු ටික එහෙම්මම තියන්න) ...
+              
+              // රේඩියන් අගය අංශක (Degrees 0 - 360) වලට හරවා ගැනීම
+              let angleInDegrees = angle * (180 / Math.PI); 
+              let gap = 12; 
+
+              // 2 වෙනි සහ 6 වෙනි කොටුවලට (j === 2 හෝ j === 6) පමණක් මෙය අදාළ කිරීම
+              // if (j === 7) {
+              //     if (
+              //         (angleInDegrees > 43 - gap  && angleInDegrees < 43 + gap)  ||   
+              //         (angleInDegrees > 226 - gap && angleInDegrees < 227 + gap)      
+              //     ) {
+              //         continue; // මේ කෝණ වල තිත් අඳින්න එපා
+              //     }
+              // }
+              // ------------------------------------------------------------------
+              
+
               let maxCosSin = Math.max(Math.abs(Math.cos(angle)), Math.abs(Math.sin(angle)));
               let localX = r * dotsForSmallCircle.radii[k] * (Math.cos(angle) / maxCosSin);
               let localY = r * dotsForSmallCircle.radii[k] * (Math.sin(angle) / maxCosSin);
 
+              // දියමන්ති හැඩයට තියෙන කොටු (3, 5, 7) අංශක 45කින් කරකැවීම
               if (j === 3 || j === 5 || j === 7) {
                 let rotAngle = 45 * Math.PI / 180;
                 let rx = localX * Math.cos(rotAngle) - localY * Math.sin(rotAngle);
@@ -509,14 +570,103 @@
               let color;
               let size = dotSizeMedium;
 
+              // කලින් තිබුණ Animation ලයිට් patterns ටික එහෙම්මමයි
+              // --- ලයිට් රටා (Patterns) ---
               switch (mode) {
-                case "rainbow": color = `hsl(${(i * 360 / dotsForSmallCircle.numberOfDots[k] + frameCount * 2) % 360}, 100%, 60%)`; break;
-                case "wave": let group = Math.floor((i + frameCount / 10) / 5) % 3; color = group === 0 ? "rgba(255, 50, 50, 1)" : (group === 1 ? "rgba(50, 255, 50, 1)" : "rgba(50, 50, 255, 1)"); break;
-                case "pulse": let pulse = 0.5 + 0.5 * Math.sin((time + i * 100) / 300); color = i % 2 === 0 ? `rgba(255, 255, 0, ${pulse})` : `rgba(255, 0, 255, ${pulse})`; break;
-                case "chase": let distance = Math.abs(i - ((frameCount * 0.2) % dotsForSmallCircle.numberOfDots[k])); color = distance < 5 ? `rgba(0, 255, 180, ${1 - (distance / 5)})` : `rgba(0, 100, 80, 0.2)`; break;
-                case "twinkle": color = Math.random() > 0.1 ? "rgba(255, 255, 255, 1)" : "rgba(200, 200, 255, 0.2)"; break;
-                case "comet": let cometDist = Math.abs(i - ((frameCount * 0.3) % dotsForSmallCircle.numberOfDots[k])); color = cometDist < 8 ? `rgba(255, 255, 200, ${1 - (cometDist / 8)})` : "rgba(100, 100, 150, 0.1)"; break;
-                default: color = `rgba(255, 255, 255, 15)`;
+                case "rainbow": 
+                    color = `hsl(${(i * 360 / dotsForSmallCircle.numberOfDots[k] + frameCount * 2) % 360}, 100%, 60%)`; 
+                    break;
+                case "wave": 
+                    let group = Math.floor((i + frameCount / 10) / 5) % 3; 
+                    color = group === 0 ? "rgba(255, 50, 50, 1)" : (group === 1 ? "rgba(50, 255, 50, 1)" : "rgba(50, 50, 255, 1)"); 
+                    break;
+                case "pulse": 
+                    let pulse = 0.5 + 0.5 * Math.sin((time + i * 100) / 300); 
+                    color = i % 2 === 0 ? `rgba(255, 255, 0, ${pulse})` : `rgba(255, 0, 255, ${pulse})`; 
+                    break;
+                case "chase": 
+                    let distance = Math.abs(i - ((frameCount * 0.2) % dotsForSmallCircle.numberOfDots[k])); 
+                    color = distance < 5 ? `rgba(0, 255, 180, ${1 - (distance / 5)})` : `rgba(0, 100, 80, 0.2)`; 
+                    break;
+                case "twinkle": 
+                    color = Math.random() > 0.1 ? "rgba(255, 255, 255, 1)" : "rgba(200, 200, 255, 0.2)"; 
+                    break;
+                case "comet": 
+                    let cometDist = Math.abs(i - ((frameCount * 0.3) % dotsForSmallCircle.numberOfDots[k])); 
+                    color = cometDist < 8 ? `rgba(255, 255, 200, ${1 - (cometDist / 8)})` : "rgba(100, 100, 150, 0.1)"; 
+                    break;
+                
+                // --- අලුතින් එකතු කළ තොරණ රටා ---
+                
+                // 1. මාරුවෙන් මාරුවට පත්තු වීම (රතු සහ කොළ)
+                case "alternate": 
+                    let isEven = i % 2 === 0;
+                    let toggle = Math.floor(frameCount / 10) % 2 === 0;
+                    color = (isEven === toggle) ? "rgba(255, 0, 0, 1)" : "rgba(0, 255, 0, 1)"; 
+                    break;
+                
+                // 2. රවුමට කැරකෙන එළිය (කහ පාටින්)
+                case "spin": 
+                    let spinAngle = (i * 360 / dotsForSmallCircle.numberOfDots[k] - frameCount * 5) % 360;
+                    if (spinAngle < 0) spinAngle += 360;
+                    color = spinAngle < 90 ? "rgba(255, 200, 0, 1)" : "rgba(20, 20, 20, 0.2)"; 
+                    break;
+                
+                // 3. ගිනි දැල්ලක් වගේ නිවී නිවී පත්තු වීම (Fire Effect)
+                case "fire": 
+                    let fireHue = 10 + Math.random() * 30; // රතු, තැඹිලි සහ කහ මිශ්‍රණයක්
+                    let fireAlpha = 0.4 + Math.random() * 0.6;
+                    color = `hsla(${fireHue}, 100%, 50%, ${fireAlpha})`;
+                    break;
+
+                // 4. වේගයෙන් නිවී නිවී පත්තු වීම (Flashing/Blinking)
+                case "flash":
+                    let flashOn = Math.floor(frameCount / 5) % 2 === 0;
+                    // ඇතුල් රවුම සහ පිට රවුම වෙනස් පාට වලින්
+                    let flashColor = (k % 2 === 0) ? "0, 255, 255" : "255, 0, 255"; 
+                    color = flashOn ? `rgba(${flashColor}, 1)` : "rgba(20, 20, 20, 0.4)";
+                    break;
+                case "buddhist_flag": 
+                    let b_colors = ["rgba(0, 51, 204, 1)", "rgba(255, 204, 0, 1)", "rgba(255, 0, 0, 1)", "rgba(255, 255, 255, 1)", "rgba(255, 102, 0, 1)"];
+                    // තිත් 4න් 4ට පාට මාරු වී රවුමට කැරකෙයි
+                    let b_idx = Math.floor((i + frameCount / 4) / 4) % 5; 
+                    color = b_colors[b_idx];
+                    break;
+
+                case "snake": 
+                    let s_length = 10; // දුවන කෑල්ලේ දිග
+                    let totalDots = dotsForSmallCircle.numberOfDots[k];
+                    let s_pos = Math.floor(frameCount / 1.5) % totalDots;
+                    let distToHead = (i - s_pos + totalDots) % totalDots;
+                    
+                    if (distToHead < s_length) {
+                        color = `rgba(255, 150, 0, ${1 - (distToHead / s_length)})`; // වලිගෙට යද්දි එළිය අඩුවේ
+                    } else {
+                        color = "rgba(20, 20, 20, 0.1)"; // අනිත් ලයිට් නිවී ඇත
+                    }
+                    break;
+              case "breathe": 
+                    let b_alpha = (Math.sin(frameCount * 0.05) + 1) / 2; // 0 සිට 1 දක්වා අගය වෙනස් වේ
+                    color = `rgba(0, 255, 150, ${0.1 + b_alpha * 0.9})`; 
+                    break;
+                case "police": 
+                    let p_chase = (i + Math.floor(frameCount / 3)) % 20;
+                    color = p_chase < 10 ? "rgba(255, 0, 0, 1)" : "rgba(0, 50, 255, 1)";
+                    break;
+                case "sparkle2": 
+                    // i සහ frameCount පදනම් කරගෙන random අගයක් හැදීම
+                    let spark = (Math.sin(i * 12.9898 + frameCount * 0.2) * 43758.5453) % 1;
+                    color = spark > 0.85 ? "rgba(255, 255, 255, 1)" : "rgba(255, 215, 0, 0.1)";
+                    break;
+                case "blocks": 
+                    let totalD = dotsForSmallCircle.numberOfDots[k];
+                    let quarter = Math.floor(((i + frameCount / 2) % totalD) / (totalD / 4));
+                    let blockColors = ["rgba(255, 0, 0, 1)", "rgba(0, 255, 0, 1)", "rgba(0, 50, 255, 1)", "rgba(255, 0, 255, 1)"];
+                    color = blockColors[quarter] || "white";
+                    break;
+
+                default: 
+                    color = `rgba(255, 255, 255, 0.5)`;
               }
 
               context.beginPath();
@@ -613,6 +763,74 @@
         }
       };
 
+      // ==========================
+      // NEW: Down Image Lights
+      // ==========================
+  // ==========================
+      // NEW: Down Image Lights
+      // ==========================
+      var drawDownImageLights = function (frameCount) {
+        var imgX = leftImgBoxStartX;
+        var imgY = leftImgBoxStartY;
+        var imgW = R * 2.01 + 6.05 * r - imageBoxPadding * 1;
+        var imgH = rightImgBoxH;
+
+        // පින්තූරයේ නියම අනුපාතයට (Responsive) ලයිට් රාමුවේ උස හැදීම
+        if (downImage.complete && downImage.naturalWidth !== 0) {
+            imgH = imgW / (downImage.naturalWidth / downImage.naturalHeight);
+        }
+
+        var numRows = 1; // ලයිට් පේළි ගණන
+        var dotSpacing = dotSizeMedium * 0.3; // තිත් අතර පරතරය
+        var rowGap = dotSizeMedium * 1; // පේළි අතර පරතරය
+        
+        // ... (Function එකේ ඉතුරු ටික වෙනස් කරන්න එපා, එහෙම්මම තියන්න) ...
+
+        for (var row = 0; row < numRows; row++) {
+          var offset = (row + 1) * rowGap;
+          var rx = imgX - offset;
+          var ry = imgY - offset;
+          var rw = imgW + offset * 2;
+          var rh = imgH + offset * 2;
+
+          var perimeter = 2 * (rw + rh);
+          var numDots = Math.floor(perimeter / dotSpacing);
+
+          for (var i = 0; i < numDots; i++) {
+            var currentDist = (i / numDots) * perimeter;
+            var x, y;
+
+            if (currentDist < rw) {
+              x = rx + currentDist;
+              y = ry;
+            } else if (currentDist < rw + rh) {
+              x = rx + rw;
+              y = ry + (currentDist - rw);
+            } else if (currentDist < 2 * rw + rh) {
+              x = rx + rw - (currentDist - (rw + rh));
+              y = ry + rh;
+            } else {
+              x = rx;
+              y = ry + rh - (currentDist - (2 * rw + rh));
+            }
+
+            // Animation Pattern එක
+            var hue = (frameCount * 2 + i * 5 + row * 40) % 200;
+            
+            // එක පැත්තකට දුවන ලයිට් එෆෙක්ට් එක (chasing effect)
+            var chase = (frameCount + i * (row % 2 === 0 ? 1 : -1)) % 20;
+            var alpha = chase < 10 ? 1.0 : 0.2; // එළිය අඩුවැඩි වීම
+            var sizeMultiplier = chase < 10 ? 1.2 : 0.8; // සයිස් එක අඩුවැඩි වීම
+
+            context.beginPath();
+            context.fillStyle = `hsla(${hue}, 100%, 60%, ${alpha})`;
+            context.arc(x, y, dotSizeMedium * sizeMultiplier, 0, Math.PI * 2, false);
+            context.fill();
+            context.closePath();
+          }
+        }
+      };    
+
       // === MAIN ANIMATION LOOP ===
       let frameCount = 0;
 
@@ -620,45 +838,103 @@
         context.clearRect(0, 0, w, h);
         let time = Date.now();
 
-        // 1. Draw Base Geometric Shapes
-        for (var i = 0; i < cx.length; i++) {
-          if (i === 1) continue;
-          context.save();
-          context.translate(cx[i], cy[i]);
-          if (i === 3 || i === 5 || i === 7) { context.rotate(45 * Math.PI / 180); }
+        // --- 1. කළු කොටු අඳින කෝඩ් එක (ලේසි වෙන්න ෆන්ක්ෂන් එකක් කරලා) ---
+        function drawBlackBoxes(boxIndices) {
+          for (let k = 0; k < boxIndices.length; k++) {
+            let i = boxIndices[k];
+            if (i === 1) continue;
+            
+            context.save();
+            context.translate(cx[i], cy[i]);
+            
+            // Shadow Effects
+            context.shadowColor = "rgba(0, 0, 0, 0.9)"; 
+            context.shadowBlur = 25; 
+            context.shadowOffsetX = 0; 
+            context.shadowOffsetY = 10; 
 
-          context.beginPath();
-          // context.strokeStyle = "#FFD700";
-          context.fillStyle = "rgba(0,0,0,1)";
-          context.lineWidth = 5;
-          if (i == 0) {
-            context.arc(0, 0, R, Math.PI * 2, false);
-          } else {
-            context.rect(-r, -r, r * 2, r * 2);
+            context.beginPath();
+            context.fillStyle = "rgba(0,0,0,1)";
+            context.lineWidth = 5;
+            
+            if (i == 0) {
+              context.arc(0, 0, R, Math.PI * 2, false);
+              context.fill();
+              
+              // මැද බුදුරුව තියෙන රවුමට රන්වන් පැහැති 3D රාමුවක්
+              context.lineWidth = 6;
+              let centerGrad = context.createLinearGradient(-R, -R, R, R);
+              centerGrad.addColorStop(0, "#FFDF00");
+              centerGrad.addColorStop(0.5, "#B8860B");
+              centerGrad.addColorStop(1, "#554300");
+              context.strokeStyle = centerGrad;
+              context.stroke();
+              
+            } else {
+              context.save();
+              if (i === 3 || i === 5 || i === 7) { 
+                context.rotate(45 * Math.PI / 180); 
+              }
+              context.rect(-r, -r, r * 2, r * 2);
+              context.fill();
+              
+              // --- අලුතින් එකතු කළ 3D Frame එක (කලු පාටින්) ---
+              context.lineWidth = 8; // රාමුවේ ඝනකම
+              
+              // 3D පෙනුමක් එක්ක කලු පාට දීම
+              let frameGrad = context.createLinearGradient(-r, -r, r, r);
+              frameGrad.addColorStop(0, "#444444"); // උඩ කෙළවර (ටිකක් අළු පාටින් highlight එකට)
+              frameGrad.addColorStop(0.3, "#000000"); // මැද කොටස සම්පූර්ණයෙන් කලු
+              frameGrad.addColorStop(1, "#000000"); // පහළ කෙළවර සම්පූර්ණයෙන් කලු
+              
+              context.strokeStyle = frameGrad;
+              context.strokeRect(-r, -r, r * 2, r * 2);
+              // ------------------------------------
+              
+              context.restore(); 
+            }
+            
+            context.shadowColor = "black"; 
+            context.closePath();
+            context.restore();
           }
-          context.stroke();
-          context.fill();
-          context.closePath();
-          context.restore();
         }
 
-        // 2. Draw Light Patterns
+        // --- 2. අලුත් පිළිවෙලට ඇඳීම (Layering) ---
+        
+        // Layer A: යටින් තියෙන සාමාන්‍ය කොටු (Squares) සහ ඒවගේ ලයිට් මුලින්ම අඳින්න
+        let bottomBoxes = [2, 4, 6, 8];
+        drawBlackBoxes(bottomBoxes);
+        drawInnerCirclePattern(frameCount, time, bottomBoxes);
+
+        // Layer B: උඩින් තියෙන දියමන්ති කොටු (Diamonds) සහ ඒවගේ ලයිට් ඊටපස්සේ අඳින්න
+        let topBoxes = [3, 5, 7]; // මෙතන 5 කියන්නේ ඔයාට උඩට ගන්න ඕන කරපු කොටුව
+        drawBlackBoxes(topBoxes);
+        drawInnerCirclePattern(frameCount, time, topBoxes);
+
+        // Layer C: මැද ලොකු රවුම
+        drawBlackBoxes([0]);
+
+        // --- 3. Background අලංකරණ (අනිත් ලයිට් රටා) ---
         drawRadialDotGrid(frameCount);
-        drawInnerCirclePattern(frameCount, time);
         centerCircleFillerPattern(frameCount, performance.now());
         drawAnimatedDiagonalLine();
         drawGapFillers(frameCount);
-
-        // drawGapPetals();
-
         filTriangle();
         centerCircleFlowerPattern();
+        drawDownImageLights(frameCount);
 
+        // --- 4. පින්තූර (Images) ඇඳීම ---
         // 3. Draw Images (Only if they are loaded)
         if (downImage.complete && downImage.naturalWidth !== 0) {
           context.imageSmoothingEnabled = true;
           context.imageSmoothingQuality = 'high';
-          context.drawImage(downImage, leftImgBoxStartX, leftImgBoxStartY, R * 2.01 + 6.05 * r - imageBoxPadding * 2, rightImgBoxH);
+          
+          // පින්තූරය ඇද වෙන්නේ නැතිව (Responsive) ඇඳීම
+          let targetW = R * 2.01 + 6.05 * r - imageBoxPadding * 2;
+          let targetH = targetW / (downImage.naturalWidth / downImage.naturalHeight);
+          
+          context.drawImage(downImage, leftImgBoxStartX, leftImgBoxStartY, targetW, targetH);
         }
 
         if (imageMakaraleft.complete && imageMakaraleft.naturalWidth !== 0) context.drawImage(imageMakaraleft, pointSqx - makara_width, pointSqy, makara_width, makara_height);
@@ -674,7 +950,7 @@
 
         // Draw Center Image (Buddha) last so it stays on top
         if (imageCenter.complete && imageCenter.naturalWidth !== 0) {
-          context.drawImage(imageCenter, cx[0] - R * Math.sin(Math.PI / 6) - w * 0.00365, cy[0] - 0.019 * w, dim + 0.018 * w, dim + 0.015 * w);
+          context.drawImage(imageCenter, cx[0] - R * Math.sin(Math.PI / 6) - w * 0.00365, cy[0] - 0.021 * w, dim + 0.018 * w, dim + 0.015 * w);
         }
 
         frameCount++;

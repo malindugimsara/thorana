@@ -345,28 +345,123 @@ body::after {
   transition: 0.3s;
 }
 
-/* ─── Responsive ───────────────────────────────────────── */
+/* ─── Mobile Responsive (Optimized for Mobile-First) ────────────────── */
 @media (max-width: 768px) {
+  /* 1. Header & Typography Adjustments */
+  .header-top {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .header-logo {
+    width: 60px; /* ෆෝන් එකට ගැලපෙන සේ ලාංඡනය කුඩා කිරීම */
+    height: 60px;
+  }
+  
+  .main-title {
+    font-size: 24px; /* Title එකේ සයිස් එක ෆෝන් තිරයට ගැලපෙන ලෙස අඩු කිරීම */
+  }
+  
+  .sub-title {
+    font-size: 15px;
+  }
+  
+  .group-info {
+    flex-direction: row; /* Column වෙනුවට Row එකේම තියාගෙන wrap වීම */
+    gap: 10px;
+    font-size: 13px;
+  }
+
+  /* 2. Story Content Layout & Spacing */
+  .story-wrapper {
+    padding: 0 15px; /* දෙපැත්තේ ඉඩ ටිකක් අඩු කිරීම (Screen space ඉතිරි කිරීමට) */
+  }
+
   .story-content,
   .story-content.reverse {
     flex-direction: column;
     text-align: center;
+    padding: 30px; /* 40px සිට 20px දක්වා අඩු කිරීම (Mobile වලට 40px වැඩියි) */
+    gap: 20px; /* 50px සිට 20px දක්වා පරතරය අඩු කිරීම */
+    border-radius: 15px;
+    margin-right: 15px;
+    margin-left: 10px;
   }
+
   .story-image,
   .story-text {
     max-width: 100%;
   }
-  .header-top,
-  .group-info,
-  .social-share {
-    flex-direction: column;
+
+  .chapter-title {
+    font-size: 22px; /* ෆෝන් එකෙන් කියවීමට පහසු ප්‍රමාණයට සෑදීම */
+    margin-bottom: 15px;
   }
-  .navigation-buttons {
-    flex-direction: column-reverse;
+
+  .chapter-content {
+    font-size: 14.5px; /* අකුරු ප්‍රමාණය සහ පේළි අතර පරතරය (Line-height) කියවීමට පහසු කිරීම */
+    line-height: 1.6;
+    text-align: left; /* Mobile වල justify වලට වඩා left align කියවන්න පහසුයි */
   }
-  .nav-btn {
-    width: 100%;
-    text-align: center;
+
+  /* 3. Navigation & Close Buttons */
+  .close-btn {
+    top: 15px;
+    right: 30px;
+    width: 30px; /* අයිකනය මඳක් කුඩා කිරීම */
+    height: 30px;
+    font-size: 14px;
+  }
+
+ .navigation-buttons {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center; /* ඇතුළේ තියෙන බටන් ටික මැදට ගන්නවා */
+    gap: 30px; 
+    width: 70%;
+    
+    /* මුළු කොටසම පිටුවේ මැදට ගන්න මේ පේළි එකතු කරන්න */
+    margin: 30px auto; /* උඩින් යටින් 30px ඉඩක් තියලා, දෙපැත්තෙන් auto දාලා මැදට ගනී */
+}
+
+  .btn-primary, 
+  .btn-secondary {
+    flex: 1; /* බටන් දෙකටම සමාන පළලක් (50% බැගින්) ලබා දෙයි */
+    width: auto;
+    padding: 12px 10px; /* එක පේළියේ බටන් 2ක් තියෙන නිසා padding ටිකක් අඩු කර ඇත */
+    font-size: 14px; /* ෆෝන් එකට ගැලපෙන්න අකුරු මඳක් කුඩා කර ඇත */
+    border-radius: 30px;
     box-sizing: border-box;
+    text-align: center;
+    white-space: nowrap; /* අකුරු පේළි දෙකකට කැඩීම වළක්වයි */
+  }
+
+  /* Touch Effects (ඔබන විට එබෙන ස්වභාවය) */
+  .btn-primary:active,
+  .btn-secondary:active {
+    transform: scale(0.96);
+  }
+
+  /* 4. Footer Adjustments */
+  .social-share {
+    flex-direction: row; /* Social icons යටට වැටෙන්නේ නැතිව එක පේළියේ තබා ගැනීම */
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+  
+  .contact-text {
+    flex-direction: column; /* Contact විස්තරය පැහැදිලිව පේළි දෙකකට කැඩීම */
+    gap: 5px;
+  }
+  
+}
+
+/* ඉතා කුඩා තිර සඳහා (Extra Small Devices - e.g. iPhone SE) */
+@media (max-width: 380px) {
+  .main-title {
+    font-size: 20px;
+  }
+  .story-content {
+    padding: 25px;
   }
 }
