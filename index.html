@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Thorana</title>
+  <title>Digital-Thorana</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
@@ -172,6 +172,14 @@
         font-size: 10px;
         /* Slightly smaller English for mobile */
       }
+
+      .close-btn {
+        top: 15px;
+        right: 20px;
+        width: 30px; /* අයිකනය මඳක් කුඩා කිරීම */
+        height: 30px;
+        font-size: 14px;
+      }
     }
 
     /* --- Loading Screen --- */
@@ -200,6 +208,34 @@
       margin-bottom: 20px;
     }
     @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* --- Close Button Styles --- */
+    .close-btn {
+      position: absolute; /* Modal එක ඇතුළේ පිහිටන්න absolute දීම වඩා හොඳයි */
+      top: 20px;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #ff5555, #cc1a1a);
+      color: #fff;
+      border: none; 
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer; 
+      z-index: 1000000;
+      transition: 0.3s;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5); 
+    }
+
+    .close-btn:hover {
+      transform: scale(1.1) rotate(90deg);
+      background: #ff2222;
+    }
   </style>
 </head>
 
@@ -210,10 +246,20 @@
     <h3>තොරණ සූදානම් වෙමින් පවතී...</h3>
   </div>
 
-  <!-- Add this right after the opening body tag -->
-  <video autoplay loop muted playsinline class="bg-video">
-    <source src="images/bg.webm" type="video/mp4">
-  </video>
+  <div style="display: none;">
+    <img id="img-down" src="images/down.webp">
+    <img id="img-center" src="images/budda.webp">
+    <img id="img-1" src="images/aa1.webp">
+    <img id="img-2" src="images/aa2.webp">
+    <img id="img-3" src="images/aa3.webp">
+    <img id="img-4" src="images/aa4.webp">
+    <img id="img-5" src="images/aa5.webp">
+    <img id="img-6" src="images/aa7.webp">
+    <img id="img-7" src="images/aa8.webp">
+  </div>
+
+  <video autoplay loop muted playsinline class="bg-video" id="bgVideo"></video>
+
 
   <div id="sound-icon">🔇</div>
 
@@ -228,21 +274,33 @@
     Your browser not supported. please try with a different device.
   </canvas>
 
+
+  <div id="storyModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.95); z-index: 999999;">
+    <button id="closeStoryBtn" class="close-btn">&#10006;</button>
+    
+    <iframe src="" id="storyFrame" style="width: 100%; height: 100%; border: none;"></iframe>
+  </div>
+
   <script>
 
-    // Make the full story button work
+  // Full Story බොත්තම සින්දුව නතර නොවී වැඩ කිරීමට අදාළ කොටස
+    const storyModal = document.getElementById("storyModal");
+    const storyFrame = document.getElementById("storyFrame");
+
     document.getElementById("fullStoryBtn").addEventListener("click", function () {
-      // Replace the URL below with the link to your full story
-      window.location.href = "test/page1.html";
+      storyFrame.src = "test/page1.html"; // කතා පිටුව පසුබිමේ ප්ලේ වන අතරතුර රාමුවට ලෝඩ් කරයි
+      storyModal.style.display = "block";  // මුළු තිරයම වැහෙන සේ Overlay එක පෙන්වයි
     });
 
+    // නැවත තොරණට යාමේ බොත්තම ක්‍රියාත්මක කිරීම
+    document.getElementById("closeStoryBtn").addEventListener("click", function () {
+      storyModal.style.display = "none";  // Overlay එක හංගයි
+      storyFrame.src = "";                // ඉඩ ඉතිරි කරගැනීමට iframe එක Clear කරයි
+    });
 
+   
     const audio = document.getElementById("my-audio");
     const icon = document.getElementById("sound-icon");
-    
-
-    
-
     window.addEventListener("load", () => {
       audio.play().catch(err => console.log("Autoplay blocked:", err));
     });
@@ -261,8 +319,6 @@
       }
     });
 
-   
-
     window.addEventListener("orientationchange", function () {
       setTimeout(function () { location.reload(); }, 300);
     });
@@ -280,43 +336,52 @@
     var leftImageBoxW, leftImageBoxH, rightImgBoxW, rightImgBoxH;
     var imageBoxPadding;
 
-    window.onload = function () {
+   window.onload = function () {
       document.getElementById('loader').style.display = 'none';
       myCanvas = document.getElementById('myCanvas');
       
-      // තිරයේ පළල (ww) සහ උස (wh) ලබා ගැනීම
       var wh = window.innerHeight;
       w = ww;
       
-      // ෆෝන් එකේ හැඩය හඳුනා ගැනීම (Portrait ද Landscape ද යන්න)
-      var isMobilePortrait = ww < 768 && ww < wh;
-      var isMobileLandscape = ww > wh && wh <= 600; // ෆෝන් එක හරවා ඇති විට (Landscape)
+      var isMobile = ww < 768;
       
-      // තිරයට ගැලපෙන සේ Canvas එකේ උස සහ තොරණේ ප්‍රමාණය (Scale) තීරණය කිරීම
-      var scale = 1.0;
-      if (isMobilePortrait) {
-          h = ww * 1.4; 
-          scale = 1.7; // ෆෝන් එක කෙලින් ඇති විට
-      } else if (isMobileLandscape) {
-          h = ww * 0.75; 
-          scale = 0.70; // ෆෝන් එක හරවා ඇති විට තොරණ ලොකු කිරීම
+      // Video එක මාරු කිරීම
+      var bgVideo = document.getElementById('bgVideo');
+      if (isMobile) {
+          bgVideo.src = "images/bgmobile.webm"; 
       } else {
-          h = ww * 0.6; // Desktop
-          scale = 0.98;
+          bgVideo.src = "images/bg.webm"; 
       }
       
-      // --- High-DPI (Mobile) Quality Fix ---
+      // අභ්‍යන්තර ප්‍රමාණයන් (Internal Dimensions)
+      // --- තිරයට ගැලපෙන සේ Canvas එකේ උස සහ Scale තීරණය කිරීම ---
+      var scale = 1.0;
+      if (isMobile) {
+          h = ww * 1.4; 
+          scale = 1.7; // ෆෝන් එක සඳහා
+      } else {
+          // Desktop වලදී Canvas එක තිරයේ උසට ගැලපෙන පරිදි සෑදීම
+          h = wh * 0.95; // මුළු තිරයේ උසින් 95% ක් ගන්නවා (පළල මත පදනම් නොවී)
+          scale = (wh / ww) * 0.6; // තිරයේ අනුපාතය (Ratio) අනුව තොරණ ලොකු කිරීම
+          
+          // තොරණ ඕනෑවට වඩා ලොකු වෙන එක පාලනය කිරීම
+          if (scale > 1.3) scale = 1.3; 
+          if (scale < 0.9) scale = 0.78;
+      }
+      
       var dpr = window.devicePixelRatio || 1; 
       
-      myCanvas.style.width = w + 'px';
-      myCanvas.style.height = h + 'px';
+      // Auto-Fit කිරීම සඳහා CSS
+      myCanvas.style.width = '100vw';
+      myCanvas.style.height = '100vh';
+      myCanvas.style.objectFit = 'contain';
+      // ----------------------------------------
       
       myCanvas.width = w * dpr;
       myCanvas.height = h * dpr;
       
       context = myCanvas.getContext("2d");
       context.scale(dpr, dpr);
-      // ------------------------------------
 
       function fullscreen() {
         var elem = document.documentElement; 
@@ -330,29 +395,27 @@
       }
       myCanvas.addEventListener("click", fullscreen);
 
-      marginTop = 0.15;
+      marginTop = 0.1;
       marginBotom = 0.1;
 
       var k = 1.8 * Math.sqrt(2) - 1;
       
-      // රවුම් වල සයිස් එක අදාළ scale එකෙන් වැඩි කිරීම
       r = (((1 - (marginTop + marginBotom)) / 4) * (1 / (k + 2)) * w) * scale;
       R = (k * r) * 1;
 
-      cx[0] = w / 2;
+     cx[0] = w / 2;
       
-      // ෆෝන් එකේ සහ Desktop එකේ තොරණ පිහිටන උස වෙනස් කිරීම
-      if (isMobilePortrait) {
-          cy[0] = (h / 2) * (1 + marginTop - marginBotom); // Portrait
-      } else if (isMobileLandscape) {
-          cy[0] = (h / 2) * (1 + marginTop - marginBotom); // Landscape (මඳක් උඩට)
+      // --- ෆෝන් එකේ සහ Desktop එකේ තොරණ පිහිටන උස වෙනස් කිරීම ---
+      if (isMobile) {
+          // Mobile එකෙත් යටින් ඉඩ තියන්න තොරණ ටිකක් උඩට ගනී
+          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.05); 
       } else {
-          cy[0] = ((h / 2) * (1 + marginTop - marginBotom)) - (h * 0.06); // Desktop
+          // Desktop වලදී යට පින්තූරය නොකැපී පේන්න තොරණ තවත් ටිකක් උඩට ගනී
+          cy[0] = (h / 2) - (h * 0.03); 
       }
-
       var gap = r * 0.5;
       var distanceToCenter = R + gap + r;
-      // ... (මෙතැනින් පහළට කෝඩ් එකේ ඉතුරු ටික එහෙම්මම තියන්න) ...
+      
 
       for (var i = 0; i <= 7; i++) { cx[i + 1] = cx[0] + distanceToCenter * Math.sin(i * (Math.PI / 4)); }
       for (var i = 0; i <= 7; i++) { cy[i + 1] = cy[0] + distanceToCenter * Math.cos(i * (Math.PI / 4)); }
@@ -362,17 +425,16 @@
       dimPointSqx = 6 * r + 2 * R;
       dimPointSqy = 0.98 * h - pointSqy;
 
-      // Loading all Images
-      const downImage = new Image(); downImage.src = "images/down.jpg";
-      const downGif = new Image(); downGif.src = "images/down.jpg";
-      const imageCenter = new Image(); imageCenter.src = "images/budda.webp";
-      const image1 = new Image(); image1.src = "images/aa1.webp";
-      const image2 = new Image(); image2.src = "images/aa2.webp";
-      const image3 = new Image(); image3.src = "images/aa3.webp";
-      const image4 = new Image(); image4.src = "images/aa4.webp";
-      const image5 = new Image(); image5.src = "images/aa5.webp";
-      const image6 = new Image(); image6.src = "images/aa7.webp";
-      const image7 = new Image(); image7.src = "images/aa8.webp";
+      // HTML එකෙන් බාගත කරගත් පින්තූර ලබා ගැනීම
+      const downImage = document.getElementById("img-down");
+      const imageCenter = document.getElementById("img-center");
+      const image1 = document.getElementById("img-1");
+      const image2 = document.getElementById("img-2");
+      const image3 = document.getElementById("img-3");
+      const image4 = document.getElementById("img-4");
+      const image5 = document.getElementById("img-5");
+      const image6 = document.getElementById("img-6");
+      const image7 = document.getElementById("img-7");
       
 
       var dim = 2 * R * Math.sin(Math.atan(0.5));
