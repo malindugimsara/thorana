@@ -5,7 +5,12 @@
   <title>Digital-Thorana</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
+  
+  <script>
+    window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+  </script>
+  <script defer src="/_vercel/insights/script.js"></script>
+  
   <link rel="icon" type="image/x-icon" href="images/athu.png" sizes="16x16">
 
   <style>
@@ -263,7 +268,7 @@
 
   <div id="sound-icon">🔇</div>
 
-  <audio id="my-audio" loop autoplay muted>
+  <audio id="my-audio" loop>
     <source src="audio/mix.mp3" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
@@ -301,10 +306,7 @@
    
     const audio = document.getElementById("my-audio");
     const icon = document.getElementById("sound-icon");
-    window.addEventListener("load", () => {
-      audio.play().catch(err => console.log("Autoplay blocked:", err));
-    });
-
+   
     icon.addEventListener("click", () => {
       if (audio.muted || audio.paused) {
         audio.muted = false;
@@ -318,6 +320,28 @@
         icon.textContent = "🔇";
       }
     });
+
+    // --- Mobile Audio Fix (පළමු Touch එකේදීම සින්දුව ප්ලේ වීම) ---
+    function unlockAudioOnFirstTouch() {
+      if (audio.muted || audio.paused) {
+        audio.muted = false;
+        audio.play().then(() => {
+          // සින්දුව ප්ලේ වුණාම අයිකන් එකත් 🔊 විදිහට මාරු කරනවා
+          icon.classList.add("active");
+          icon.textContent = "🔊";
+        }).catch(err => console.log("Audio Error:", err));
+      }
+      
+      // මේක එක පාරක් ප්ලේ වුණාට පස්සේ, මේ Event එක අයින් කරලා දානවා
+      // (නැත්නම් තිරය අල්ලන අල්ලන සැරේට මේක වැඩ කරන්න ගන්නවා)
+      document.body.removeEventListener("touchstart", unlockAudioOnFirstTouch);
+      document.body.removeEventListener("click", unlockAudioOnFirstTouch);
+    }
+
+    // තිරය Touch කරන හෝ Click කරන පළමු අවස්ථාවේදීම ක්‍රියාත්මක වීමට
+    document.body.addEventListener("touchstart", unlockAudioOnFirstTouch, { once: true });
+    document.body.addEventListener("click", unlockAudioOnFirstTouch, { once: true });
+    // -------------------------------------------------------------
 
     window.addEventListener("orientationchange", function () {
       setTimeout(function () { location.reload(); }, 300);
